@@ -25,6 +25,37 @@ def install_phpmyadmin():
 	os.system('mv ' + INSTALL_PARENT_PATH + 'phpmyadmin-phpmyadmin-* ' + PHPMYADMIN_INSTALL_PATH)
 	os.system('rm /tmp/pma.tar.gz')
 	
+	apache_conf = '''
+# phpMyAdmin ISPCHelper Apache configuration
+
+Alias /phpmyadmin {0}
+
+<Directory {0}>
+    Options FollowSymLinks
+	Require all granted
+
+    <IfModule mod_fcgid.c>
+            Options +ExecCGI
+            AddHandler fcgid-script .php
+            FCGIWrapper /var/www/php-fcgi-scripts/ispconfig/.php-fcgi-starter .php
+            Order allow,deny
+            allow from all
+    </IfModule>
+</Directory>
+
+<Directory {0}/libraries>
+    Require all denied
+</Directory>
+'''
+	apache_conf.format(PHPMYADMIN_INSTALL_PATH)
+	conf = open('/etc/apache2/conf-enabled/phpmyadmin.conf', 'w')
+	conf.write(apache_conf)
+	conf.close()
+	
+	os.system('service apache2 restart')
+	
+	
+	
 
 def install_roundcube():
 	last_release = parse_json('https://api.github.com/repos/roundcube/roundcubemail/releases/latest')
