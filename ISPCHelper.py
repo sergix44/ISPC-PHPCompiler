@@ -2,15 +2,15 @@ import json
 import platform
 import sys
 import distutils.version
-import urllib2
 
 __version__ = 1.0
 
-SUPPORTED_PLATFORMS = ['ubuntu', 'debian', '', 'linuxmint']  # '' for develop under windows
+SUPPORTED_PLATFORMS = ['ubuntu', 'debian', '', 'linuxmint']  # '' and 'linuxmint' for development purposes
 
-PHPMYADMIN_INSTALL_PATH = '/var/www/apps/phpmyadmin'
-ROUNDCUBE_INSTALL_PATH = '/var/www/apps/roundcube'
-PHP_INSTALL_PATH = '/opt/php-{0}'
+INSTALL_PARENT_PATH = '/opt/'
+PHPMYADMIN_INSTALL_PATH = INSTALL_PARENT_PATH + 'phpmyadmin'
+ROUNDCUBE_INSTALL_PATH = INSTALL_PARENT_PATH + 'roundcube'
+PHP_INSTALL_PATH = INSTALL_PARENT_PATH + 'php{0}'
 
 
 def parse_json(url):
@@ -19,12 +19,19 @@ def parse_json(url):
 	return json.loads(data)
 
 
-def install_roundcube():
-	last_release = parse_json('https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest')
-
-
 def install_phpmyadmin():
+	last_release = parse_json('https://api.github.com/repos/phpmyadmin/phpmyadmin/releases/latest')
+	os.system('cd /tmp/ && wget -O pma.tar.gz ' + last_release['tarball_url'] + ' && tar zxf pma.tar.gz -C /opt/')
+	os.system('mv ' + INSTALL_PARENT_PATH + 'phpmyadmin-phpmyadmin-* ' + PHPMYADMIN_INSTALL_PATH)
+	os.system('rm /tmp/pma.tar.gz')
+	
+
+def install_roundcube():
 	last_release = parse_json('https://api.github.com/repos/roundcube/roundcubemail/releases/latest')
+	os.system('cd /tmp/ && wget -O roundcube.tar.gz ' + last_release['assets'][2]['browser_download_url'] + ' && tar zxf roundcube.tar.gz -C /opt/')
+	os.system('mv ' + INSTALL_PARENT_PATH + 'roundcubemail-* ' + ROUNDCUBE_INSTALL_PATH)
+	os.system('rm /tmp/roundcube.tar.gz')
+	
 
 
 def install_update_php(version):
