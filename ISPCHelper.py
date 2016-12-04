@@ -7,7 +7,7 @@ import multiprocessing
 
 __version__ = 1.0
 
-SUPPORTED_PLATFORMS = ['ubuntu', 'debian', '', 'linuxmint']  # '' and 'linuxmint' for development purposes
+SUPPORTED_PLATFORMS = ['ubuntu', 'debian']
 
 INSTALL_PARENT_PATH = '/opt/'
 PHP_INSTALL_PATH = INSTALL_PARENT_PATH + 'php{0}'
