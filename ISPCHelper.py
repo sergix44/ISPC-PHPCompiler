@@ -213,20 +213,24 @@ def php_menu():
         print('{0}) Update/install PHP {1}({2})'.format(str(i), v['name'], v['version']))
         versions[str(i)] = v
         i += 1
-    
+    print('q) Main Menu')
     sel = raw_input('\nChoose an option: ')
-    if sel not in versions:
-        print('Invalid selection.')
+    if sel == 'q':
         main_menu()
+    elif sel not in versions:
+        print('Invalid selection.')
+        php_menu()
     else:
         install_update_php(versions[sel])
 
 
 def main_menu():
     print('1) Manage PHP Additional Versions')
+    print('q) Quit')
     
     menu = {
-        '1': php_menu
+        '1': php_menu,
+        'q': sys.exit
     }
     
     sel = raw_input('\nChoose an option: ')
