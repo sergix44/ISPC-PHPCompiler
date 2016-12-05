@@ -4,6 +4,7 @@ import sys
 import os
 import urllib2
 import multiprocessing
+import shutil
 
 __version__ = 1.0
 
@@ -32,32 +33,37 @@ def install_update_php(version):
     if not os.path.exists('/usr/local/src/php5-build'):
         os.makedirs('/usr/local/src/php5-build')
     
+    print('Downloading sources...')
     archive_name = os.path.basename(version['downloadurl'])
     folder_name = archive_name.replace('.tar.gz', '')
     
     os.system('cd /usr/local/src/php5-build && wget {0} -O {1} && tar zxf {1}'.format(version['downloadurl'], archive_name))
-
+    
+    if not os.path.exists('/usr/local/src/php5-build/' + folder_name):
+        print('Cannot find extracted dir.')
+        sys.exit(1)
+    
     print('Dependecies check...')
     os.system(
         'apt-get -y install build-essential libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev')
     os.system('ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a')
-
+    
     print('Creating configure...')
     os.system(
         'cd /usr/local/src/php5-build/{0} && ./configure --prefix={1} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp --with-imap --with-imap-ssl --with-kerberos --with-gettext --with-xmlrpc --with-xsl --enable-opcache --enable-fpm'
             .format(folder_name, php_path))
-
+    
     print('Creating compiling...')
     os.system('cd /usr/local/src/php5-build/{0} && make -j{1}'.format(folder_name, multiprocessing.cpu_count()))
     os.system('cd /usr/local/src/php5-build/{0} && make install'.format(folder_name))
     
     if not upgrade_version:
         fpm_port = input('PHP-FPM port: ')
-
+        
         print('Writing configs...')
-        os.system('cp /usr/local/src/php5-build/{0}/php.ini-production /opt/{1}/lib/php.ini'.format(folder_name, php_path))
-        os.system('cp /opt/{0}/etc/php-fpm.conf.default {0}/etc/php-fpm.conf'.format(php_path))
-        os.system('cp /opt/{0}/etc/php-fpm.d/www.conf.default {0}/etc/php-fpm.d/www.conf'.format(php_path))
+        os.system('cp /usr/local/src/php5-build/{0}/php.ini-production {1}/lib/php.ini'.format(folder_name, php_path))
+        os.system('cp {0}/etc/php-fpm.conf.default {0}/etc/php-fpm.conf'.format(php_path))
+        os.system('cp {0}/etc/php-fpm.d/www.conf.default {0}/etc/php-fpm.d/www.conf'.format(php_path))
         
         os.system("sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' {0}/etc/php-fpm.conf".format(php_path))
         os.system("sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:{1}/' {0}/etc/php-fpm.d/www.conf".format(php_path, fpm_port))
@@ -65,19 +71,19 @@ def install_update_php(version):
         f = open('/etc/init.d/{0}-fpm'.format(php_name), 'w')
         f.write('''#! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          %s-fpm
+# Provides:          {1}-fpm
 # Required-Start:    $all
 # Required-Stop:     $all
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: starts %s-fpm
+# Short-Description: starts {1}-fpm
 # Description:       starts the PHP FastCGI Process Manager daemon
 ### END INIT INFO
-php_fpm_BIN=%s/sbin/php-fpm
-php_fpm_CONF=%s/etc/php-fpm.conf
-php_fpm_PID=%s/var/run/php-fpm.pid
+php_fpm_BIN={0}/sbin/php-fpm
+php_fpm_CONF={0}/etc/php-fpm.conf
+php_fpm_PID={0}/var/run/php-fpm.pid
 php_opts="--fpm-config $php_fpm_CONF"
-wait_for_pid () {
+wait_for_pid () {{
         try=0
         while test $try -lt 35 ; do
                 case "$1" in
@@ -98,7 +104,7 @@ wait_for_pid () {
                 try=`expr $try + 1`
                 sleep 1
         done
-}
+}}
 case "$1" in
         start)
                 echo -n "Starting php-fpm "
@@ -160,10 +166,10 @@ case "$1" in
                 echo " done"
         ;;
         *)
-                echo "Usage: $0 {start|stop|force-quit|restart|reload}"
+                echo "Usage: $0 {{start|stop|force-quit|restart|reload}}"
                 exit 1
         ;;
-esac''' % php_path)
+esac'''.format(php_path, php_name))
         f.close()
         
         os.system('chmod 755 /etc/init.d/{0}-fpm'.format(php_name))
@@ -171,7 +177,7 @@ esac''' % php_path)
         
         f = open('/lib/systemd/system/{0}-fpm.service'.format(php_name), 'w')
         f.write('''[Unit]
-Description=The PHP 7 FastCGI Process Manager
+Description=The PHP {1} FastCGI Process Manager
 After=network.target
 
 [Service]
@@ -181,9 +187,10 @@ ExecStart={0}/sbin/php-fpm --nodaemonize --fpm-config {0}/etc/php-fpm.conf
 ExecReload=/bin/kill -USR2 $MAINPID
 
 [Install]
-WantedBy=multi-user.target'''.format(php_path))
+WantedBy=multi-user.target'''.format(php_path, php_name))
         f.close()
         
+        print('Starting FPM daemon...')
         os.system('systemctl enable {0}-fpm.service'.format(php_name))
         os.system('systemctl daemon-reload')
         
@@ -193,14 +200,16 @@ WantedBy=multi-user.target'''.format(php_path))
     
     else:
         os.system('systemctl restart {0}-fpm.service'.format(php_name))
+        
+    shutil.rmtree('/usr/local/src/php5-build/' + folder_name)
     
     print('----------- COMPLETED -----------')
     print('FastCGI Settings:')
-    print("Path to the PHP FastCGI binary: {0}/bin/php-cgi\nPath to the php.ini directory: {0}/lib".format(php_path))
+    print(" - Path to the PHP FastCGI binary: {0}/bin/php-cgi\n - Path to the php.ini directory: {0}/lib".format(php_path))
     print('PHP-FPM Settings:')
-    print("Path to the PHP-FPM init script: /etc/init.d/{1}-fpm\n"
-          "Path to the php.ini directory: {0}/lib\n"
-          "Path to the PHP-FPM pool directory: {0}/etc/php-fpm.d\n".format(php_path, php_name))
+    print(" - Path to the PHP-FPM init script: /etc/init.d/{1}-fpm\n"
+          " - Path to the php.ini directory: {0}/lib\n"
+          " - Path to the PHP-FPM pool directory: {0}/etc/php-fpm.d\n".format(php_path, php_name))
     print('---------------------------------')
 
 
