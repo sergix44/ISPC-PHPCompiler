@@ -30,6 +30,8 @@ def install_update_php(version):
     if not os.path.exists(php_path):
         os.makedirs(php_path)
         upgrade_version = False
+    else:
+        os.system('systemctl stop {0}-fpm.service'.format(php_name))
     if not os.path.exists('/usr/local/src/php5-build'):
         os.makedirs('/usr/local/src/php5-build')
     
@@ -177,7 +179,7 @@ esac'''.format(php_path, php_name))
         
         f = open('/lib/systemd/system/{0}-fpm.service'.format(php_name), 'w')
         f.write('''[Unit]
-Description=The PHP {1} FastCGI Process Manager
+Description=The {1} FastCGI Process Manager
 After=network.target
 
 [Service]
