@@ -200,8 +200,9 @@ WantedBy=multi-user.target'''.format(php_path, php_name))
     
     else:
         os.system('systemctl restart {0}-fpm.service'.format(php_name))
-        
+    
     shutil.rmtree('/usr/local/src/php5-build/' + folder_name)
+    os.remove('/usr/local/src/php5-build/' + archive_name)
     
     print('----------- COMPLETED -----------')
     print('FastCGI Settings:')
