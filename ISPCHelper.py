@@ -5,8 +5,9 @@ import os
 import urllib2
 import multiprocessing
 import shutil
+from distutils.version import LooseVersion
 
-__version__ = 1.0
+__version__ = 1.1
 
 SUPPORTED_PLATFORMS = ['ubuntu', 'debian']
 
@@ -65,10 +66,17 @@ def install_update_php(version):
         print('Writing configs...')
         os.system('cp /usr/local/src/php5-build/{0}/php.ini-production {1}/lib/php.ini'.format(folder_name, php_path))
         os.system('cp {0}/etc/php-fpm.conf.default {0}/etc/php-fpm.conf'.format(php_path))
-        os.system('cp {0}/etc/php-fpm.d/www.conf.default {0}/etc/php-fpm.d/www.conf'.format(php_path))
         
         os.system("sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' {0}/etc/php-fpm.conf".format(php_path))
-        os.system("sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:{1}/' {0}/etc/php-fpm.d/www.conf".format(php_path, fpm_port))
+        
+        if LooseVersion(version['name']) >= LooseVersion('7.0'):
+            os.system('cp {0}/etc/php-fpm.d/www.conf.default {0}/etc/php-fpm.d/www.conf'.format(php_path))
+            os.system("sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:{1}/' {0}/etc/php-fpm.d/www.conf".format(php_path, fpm_port))
+        
+        if LooseVersion(version['name']) < LooseVersion('7.0'):
+            os.system("sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:{1}/' {0}/etc/php-fpm.conf".format(php_path, fpm_port))
+            os.system('echo "include={0}/etc/pool.d/*.conf" >> {0}/etc/php-fpm.conf'.format(php_path))
+            os.makedirs('{0}/etc/pool.d'.format(php_path))
         
         f = open('/etc/init.d/{0}-fpm'.format(php_name), 'w')
         f.write('''#! /bin/sh
