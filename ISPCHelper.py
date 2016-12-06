@@ -75,8 +75,8 @@ def install_update_php(version):
         
         if LooseVersion(version['name']) < LooseVersion('7.0'):
             os.system("sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:{1}/' {0}/etc/php-fpm.conf".format(php_path, fpm_port))
-            os.system('echo "include={0}/etc/pool.d/*.conf" >> {0}/etc/php-fpm.conf'.format(php_path))
-            os.makedirs('{0}/etc/pool.d'.format(php_path))
+            os.system('echo "include={0}/etc/php-fpm.d/*.conf" >> {0}/etc/php-fpm.conf'.format(php_path))
+            os.makedirs('{0}/etc/php-fpm.d'.format(php_path))
         
         f = open('/etc/init.d/{0}-fpm'.format(php_name), 'w')
         f.write('''#! /bin/sh
