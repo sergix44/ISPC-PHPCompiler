@@ -57,7 +57,7 @@ def install_update_php(version):
         'cd /usr/local/src/php5-build/{0} && ./configure --prefix={1} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp --with-imap --with-imap-ssl --with-kerberos --with-gettext --with-xmlrpc --with-xsl --enable-opcache --enable-fpm'
             .format(folder_name, php_path))
     
-    print('Creating compiling...')
+    print('Compiling...')
     os.system('cd /usr/local/src/php5-build/{0} && make -j{1}'.format(folder_name, multiprocessing.cpu_count()))
     os.system('cd /usr/local/src/php5-build/{0} && make install'.format(folder_name))
     

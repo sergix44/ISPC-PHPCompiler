@@ -24,11 +24,6 @@
       "name": "5.4",
       "version": "5.4.45",
       "downloadurl": "http://php.net/distributions/php-5.4.45.tar.gz"
-    },
-    {
-      "name": "5.3",
-      "version": "5.3.29",
-      "downloadurl": "http://php.net/distributions/php-5.3.29.tar.gz"
     }
   ]
 }
