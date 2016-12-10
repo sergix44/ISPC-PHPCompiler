@@ -12,8 +12,8 @@
     },
     {
       "name": "5.6",
-      "version": "5.6.28",
-      "downloadurl": "http://php.net/distributions/php-5.6.28.tar.gz"
+      "version": "5.6.29",
+      "downloadurl": "http://php.net/distributions/php-5.6.29.tar.gz"
     },
     {
       "name": "5.5",
