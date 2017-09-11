@@ -34,38 +34,41 @@ def install_update_php(version):
         upgrade_version = False
     else:
         os.system('systemctl stop {0}-fpm.service'.format(php_name))
-    if not os.path.exists('/usr/local/src/php5-build'):
-        os.makedirs('/usr/local/src/php5-build')
+    if not os.path.exists('/usr/local/src/php-build'):
+        os.makedirs('/usr/local/src/php-build')
     
     print('Downloading sources...')
     archive_name = os.path.basename(version['downloadurl'])
     folder_name = archive_name.replace('.tar.gz', '')
     
-    os.system('cd /usr/local/src/php5-build && wget {0} -O {1} && tar zxf {1}'.format(version['downloadurl'], archive_name))
+    os.system('cd /usr/local/src/php-build && wget {0} -O {1} && tar zxf {1}'.format(version['downloadurl'], archive_name))
     
-    if not os.path.exists('/usr/local/src/php5-build/' + folder_name):
+    if not os.path.exists('/usr/local/src/php-build/' + folder_name):
         print('Cannot find extracted dir.')
         sys.exit(1)
     
     print('Dependecies check...')
     os.system(
-        'apt-get -y install build-essential libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev')
+        'apt-get -y install build-essential nano wget libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev')
+    if platform.dist()[0].lower() == 'ubuntu':
+        os.system('apt-get -y install libxml2-dev libjpeg62-dbg')
+    
     os.system('ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a')
     
     print('Creating configure...')
     os.system(
-        'cd /usr/local/src/php5-build/{0} && ./configure --prefix={1} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp --with-imap --with-imap-ssl --with-kerberos --with-gettext --with-xmlrpc --with-xsl --enable-opcache --enable-fpm'
+        'cd /usr/local/src/php-build/{0} && ./configure --prefix={1} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp --with-imap --with-imap-ssl --with-kerberos --with-gettext --with-xmlrpc --with-webp-dir=/usr --with-xsl --enable-opcache --enable-fpm'
             .format(folder_name, php_path))
     
     print('Compiling...')
-    os.system('cd /usr/local/src/php5-build/{0} && make -j{1}'.format(folder_name, multiprocessing.cpu_count()))
-    os.system('cd /usr/local/src/php5-build/{0} && make install'.format(folder_name))
+    os.system('cd /usr/local/src/php-build/{0} && make -j{1}'.format(folder_name, multiprocessing.cpu_count()))
+    os.system('cd /usr/local/src/php-build/{0} && make install'.format(folder_name))
     
     if not upgrade_version:
         fpm_port = input('PHP-FPM port: ')
         
         print('Writing configs...')
-        os.system('cp /usr/local/src/php5-build/{0}/php.ini-production {1}/lib/php.ini'.format(folder_name, php_path))
+        os.system('cp /usr/local/src/php-build/{0}/php.ini-production {1}/lib/php.ini'.format(folder_name, php_path))
         os.system('cp {0}/etc/php-fpm.conf.default {0}/etc/php-fpm.conf'.format(php_path))
         
         os.system("sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' {0}/etc/php-fpm.conf".format(php_path))
@@ -212,8 +215,8 @@ WantedBy=multi-user.target'''.format(php_path, php_name))
     else:
         os.system('systemctl restart {0}-fpm.service'.format(php_name))
     
-    shutil.rmtree('/usr/local/src/php5-build/' + folder_name)
-    os.remove('/usr/local/src/php5-build/' + archive_name)
+    shutil.rmtree('/usr/local/src/php-build/' + folder_name)
+    os.remove('/usr/local/src/php-build/' + archive_name)
     
     print('----------- COMPLETED -----------')
     print('FastCGI Settings:')
