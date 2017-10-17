@@ -2,13 +2,13 @@
   "versions": [
     {
       "name": "7.1",
-      "version": "7.1.9",
-      "downloadurl": "http://php.net/distributions/php-7.1.9.tar.gz"
+      "version": "7.1.10",
+      "downloadurl": "http://php.net/distributions/php-7.1.10.tar.gz"
     },
     {
       "name": "7.0",
-      "version": "7.0.23",
-      "downloadurl": "http://php.net/distributions/php-7.0.23.tar.gz"
+      "version": "7.0.24",
+      "downloadurl": "http://php.net/distributions/php-7.0.24.tar.gz"
     },
     {
       "name": "5.6",
