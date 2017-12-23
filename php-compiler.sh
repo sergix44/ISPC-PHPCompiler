@@ -18,6 +18,15 @@ function install_utils {
     check_return_code
 }
 
+# $1=php_name (like 'php70'), $2=php_path (like '/opt/php70')
+function create_init_script {
+:
+}
+
+function create_systemd_script {
+:
+}
+
 #-- Install Functions
 
 function am_i_root {
@@ -81,6 +90,10 @@ function detect_distro {
   
 }
 
+function install_dependencies {
+:
+}
+
 function get_menu {
     source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
     check_return_code
@@ -96,12 +109,10 @@ function show_menu {
 	USER_SELECTION=$(whiptail --title "PHP Compiler" --checklist "Select PHP versions to install or update:" 15 35 "$((${#menu[@]}/3))" "${menu[@]}" 3>&1 1>&2 2>&3)
 }
 
-function install_dependencies {
-
-}
 
 am_i_root
 detect_distro
 install_utils
+install_dependencies
 get_menu
 show_menu
