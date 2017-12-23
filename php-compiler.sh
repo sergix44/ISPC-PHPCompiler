@@ -21,9 +21,9 @@ function install_utils {
 #-- Install Functions
 
 function am_i_root {
-    if [ "$EUID" -ne 0 ]
-      then echo "Please run as root"
-      exit
+    if [ "$EUID" -ne 0 ]; then 
+		echo "Please run as root"
+		exit
     fi
 }
 
@@ -86,7 +86,22 @@ function get_menu {
     check_return_code
 }
 
+function show_menu {
+	menu=()
+
+	for version in "${!VERSIONS[@]}"; do
+		menu+=( "${version}" "" OFF )
+	done
+
+	USER_SELECTION=$(whiptail --title "PHP Compiler" --checklist "Select PHP versions to install or update:" 15 35 "$((${#menu[@]}/3))" "${menu[@]}" 3>&1 1>&2 2>&3)
+}
+
+function install_dependencies {
+
+}
+
 am_i_root
 detect_distro
 install_utils
 get_menu
+show_menu
