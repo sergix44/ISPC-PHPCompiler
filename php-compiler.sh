@@ -37,6 +37,14 @@ function download_extract {
     wget "${1}" -O "${ARCHIVE_NAME}"
     check_return_code
     
+    # TO CHECK
+    if [ $(sha256sum "${ARCHIVE_NAME}" | cut -d' ' -f1) != "${2}" ]; then
+    	echo "Checksum mismatch, try to run the script again"
+	echo $(sha256sum "${ARCHIVE_NAME}")
+	exit 409
+    fi
+    # END TO CHECK
+
     tar zxf "${ARCHIVE_NAME}"
     check_return_code
 }
@@ -311,7 +319,9 @@ function elaborate_selection {
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
         
         check_folder "${COMPILE_PATH}"
-        download_extract "${VERSIONS[selection]}"
+	# TO CHECK
+        download_extract "${VERSIONS[selection]}" "${CHECKSUM[selection]}"
+	# END TO CHECK
         compile
         create_folder "${CURRENT_PHP_PATH}"
         install ${selection:4:1}
