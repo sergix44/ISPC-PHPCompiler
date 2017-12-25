@@ -3,6 +3,7 @@
 # Download link and chesum from php.net/downloads.php
 
 # All PHP versions
+# shellcheck disable=SC2034
 declare -A VERSIONS=(
 	["PHP 5.6.32"]="http://php.net/distributions/php-5.6.32.tar.gz"
 	["PHP 7.0.26"]="http://php.net/distributions/php-7.0.26.tar.gz"
@@ -11,6 +12,7 @@ declare -A VERSIONS=(
 )
 
 # All PHP versions checksum
+# shellcheck disable=SC2034
 declare -A CHECKSUM=(
 	["PHP 5.6.32"]="7bef1ae8cd633df5b9c5964262d276d2dc21acbfcd94022d1e2084d199315df4"
 	["PHP 7.0.26"]="04c345f7c9e3f1cd02f275bfec893a4e0290e724073f2f3d7282a219128b537c"

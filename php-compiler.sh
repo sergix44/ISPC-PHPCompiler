@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 #-- Globals
 
 COMPILE_PATH="/usr/local/src/php-build"
@@ -9,6 +10,7 @@ CURRENT_PHP_NAME="" # php70
 #-- Helpers Functions
 
 check_return_code() {
+        # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
        exit 500
@@ -33,14 +35,14 @@ check_folder() {
 
 download_extract() {
     ARCHIVE_NAME=${1##*/}
-    
+
     wget "${1}" -O "${ARCHIVE_NAME}"
     check_return_code
 
     if [ "$(sha256sum "${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
-    	echo "Checksum mismatch, try to run the script again"
-		sha256sum "${ARCHIVE_NAME}"; echo
-		exit 409
+        echo "Checksum mismatch, try to run the script again"
+        sha256sum "${ARCHIVE_NAME}"; echo
+        exit 409
     fi
 
     tar zxf "${ARCHIVE_NAME}"
@@ -51,62 +53,62 @@ download_extract() {
 
 am_i_root() {
     if [ "$EUID" -ne 0 ]; then
-		echo "Please run as root"
-		exit
+        echo "Please run as root"
+        exit
     fi
 }
 
 detect_distro() {
+    # shellcheck disable=SC1091
+    source /etc/os-release
+    check_return_code
 
-  source /etc/os-release
-  check_return_code
+    DISTRO=""
 
-  DISTRO=""
-
-  if echo "${ID}-${VERSION_ID}" | grep -iq "debian-7"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "debian-7"; then
     DISTRO=debian7
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "debian-8"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "debian-8"; then
     DISTRO=debian8
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "debian-9"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "debian-9"; then
     DISTRO=debian9
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-14.04"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-14.04"; then
     DISTRO=ubuntu-14.04
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-15.10"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-15.10"; then
     DISTRO=ubuntu-15.10
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.04"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.04"; then
     DISTRO=ubuntu-16.04
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.10"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.10"; then
     DISTRO=ubuntu-16.10
-  fi
+    fi
 
 
-  if echo "${ID}-${VERSION_ID}" | grep -iq "centos-7"; then
+    if echo "${ID}-${VERSION_ID}" | grep -iq "centos-7"; then
     DISTRO=centos7
-  fi
+    fi
 
-  if "${DISTRO}" == ""; then
+    if "${DISTRO}" == ""; then
     echo "Your distro is not supported"
     echo "You can add it and make a PR ;)"
     exit 404
-  fi
+    fi
 
 }
 
@@ -115,18 +117,19 @@ install_dependencies() {
 }
 
 get_menu() {
+    # shellcheck disable=SC1090
     source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
     check_return_code
 }
 
 show_menu() {
-	menu=()
+    menu=()
 
-	for version in "${!VERSIONS[@]}"; do
-		menu+=( "${version}" "" OFF )
-	done
+    for version in "${!VERSIONS[@]}"; do
+        menu+=( "${version}" "" OFF )
+    done
 
-	USER_SELECTION=$(whiptail --title "PHP Compiler" --checklist "Select PHP versions to install or update:" 15 35 "$((${#menu[@]}/3))" "${menu[@]}" 3>&1 1>&2 2>&3)
+    USER_SELECTION=$(whiptail --title "PHP Compiler" --checklist "Select PHP versions to install or update:" 15 35 "$((${#menu[@]}/3))" "${menu[@]}" 3>&1 1>&2 2>&3)
 }
 
 # $1=php_name (like 'php70'), $2=php_path (like '/opt/php70')
@@ -288,7 +291,7 @@ compile() {
     check_return_code
 
     if [ -d "${CURRENT_PHP_PATH}" ]; then
-		systemctl stop "${CURRENT_PHP_NAME}-fpm.service"
+        systemctl stop "${CURRENT_PHP_NAME}-fpm.service"
     fi
 
     make -C "${FOLDER_NAME}" install
@@ -314,35 +317,35 @@ install() {
         check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
     fi
 
-	create_init_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
-	chmod 755 "/etc/init.d/${CURRENT_PHP_NAME}-fpm"
-	insserv "${CURRENT_PHP_NAME}-fpm"
+    create_init_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
+    chmod 755 "/etc/init.d/${CURRENT_PHP_NAME}-fpm"
+    insserv "${CURRENT_PHP_NAME}-fpm"
 
-	create_systemd_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
+    create_systemd_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
 
-	systemctl enable "${CURRENT_PHP_NAME}-fpm.service"
-	systemctl daemon-reload
+    systemctl enable "${CURRENT_PHP_NAME}-fpm.service"
+    systemctl daemon-reload
 
-	echo "zend_extension=opcache.so" >> "${CURRENT_PHP_PATH}/lib/php.ini"
+    echo "zend_extension=opcache.so" >> "${CURRENT_PHP_PATH}/lib/php.ini"
 
-	systemctl start "${CURRENT_PHP_NAME}-fpm.service"
+    systemctl start "${CURRENT_PHP_NAME}-fpm.service"
 }
 
 completed() {
-	echo "----------- COMPLETED: [${CURRENT_PHP_NAME}] -----------"
-	echo "FastCGI Settings:"
-	echo " - Path to the PHP FastCGI binary: ${CURRENT_PHP_PATH}/bin/php-cgi"
-	echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
-	echo "PHP-FPM Settings:"
-	echo " - Path to the PHP-FPM init script: /etc/init.d/${CURRENT_PHP_NAME}-fpm"
-	echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
-	echo " - Path to the PHP-FPM pool directory: ${CURRENT_PHP_PATH}/etc/php-fpm.d"
-	echo "--------------------------------------------------------"
+    echo "----------- COMPLETED: [${CURRENT_PHP_NAME}] -----------"
+    echo "FastCGI Settings:"
+    echo " - Path to the PHP FastCGI binary: ${CURRENT_PHP_PATH}/bin/php-cgi"
+    echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
+    echo "PHP-FPM Settings:"
+    echo " - Path to the PHP-FPM init script: /etc/init.d/${CURRENT_PHP_NAME}-fpm"
+    echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
+    echo " - Path to the PHP-FPM pool directory: ${CURRENT_PHP_PATH}/etc/php-fpm.d"
+    echo "--------------------------------------------------------"
 }
 
 cleanup() {
-	rm -r "/usr/local/src/php-build/${FOLDER_NAME}"
-	rm -r "/usr/local/src/php-build/${ARCHIVE_NAME}"
+    rm -r "/usr/local/src/php-build/${FOLDER_NAME}"
+    rm -r "/usr/local/src/php-build/${ARCHIVE_NAME}"
 }
 
 elaborate_selection() {
