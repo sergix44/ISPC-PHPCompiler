@@ -8,14 +8,14 @@ CURRENT_PHP_NAME="" # php70
 
 #-- Helpers Functions
 
-function check_return_code {
+check_return_code() {
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
        exit 500
     fi
 }
 
-function install_utils {
+install_utils() {
     if "${DISTRO}" == "centos7"; then
         yum -y install whiptail curl
     else
@@ -24,26 +24,24 @@ function install_utils {
     check_return_code
 }
 
-function check_folder {
+check_folder() {
     if [ ! -d "${1}" ]; then
         mkdir -p "${1}"
         check_return_code
     fi
 }
 
-function download_extract {
+download_extract() {
     ARCHIVE_NAME=${1##*/}
     
     wget "${1}" -O "${ARCHIVE_NAME}"
     check_return_code
-    
-    # TO CHECK
-    if [ $(sha256sum "${ARCHIVE_NAME}" | cut -d' ' -f1) != "${2}" ]; then
+
+    if [ "$(sha256sum "${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
     	echo "Checksum mismatch, try to run the script again"
-	echo $(sha256sum "${ARCHIVE_NAME}")
-	exit 409
+		sha256sum "${ARCHIVE_NAME}"; echo
+		exit 409
     fi
-    # END TO CHECK
 
     tar zxf "${ARCHIVE_NAME}"
     check_return_code
@@ -51,14 +49,14 @@ function download_extract {
 
 #-- Install Functions
 
-function am_i_root {
-    if [ "$EUID" -ne 0 ]; then 
+am_i_root() {
+    if [ "$EUID" -ne 0 ]; then
 		echo "Please run as root"
 		exit
     fi
 }
 
-function detect_distro {
+detect_distro() {
 
   source /etc/os-release
   check_return_code
@@ -69,17 +67,17 @@ function detect_distro {
     DISTRO=debian7
   fi
 
-  
+
   if echo "${ID}-${VERSION_ID}" | grep -iq "debian-8"; then
     DISTRO=debian8
   fi
 
-  
+
   if echo "${ID}-${VERSION_ID}" | grep -iq "debian-9"; then
     DISTRO=debian9
   fi
 
-  
+
   if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-14.04"; then
     DISTRO=ubuntu-14.04
   fi
@@ -109,19 +107,19 @@ function detect_distro {
     echo "You can add it and make a PR ;)"
     exit 404
   fi
-  
+
 }
 
-function install_dependencies {
+install_dependencies() {
 :
 }
 
-function get_menu {
+get_menu() {
     source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
     check_return_code
 }
 
-function show_menu {
+show_menu() {
 	menu=()
 
 	for version in "${!VERSIONS[@]}"; do
@@ -132,7 +130,7 @@ function show_menu {
 }
 
 # $1=php_name (like 'php70'), $2=php_path (like '/opt/php70')
-function create_init_script {
+create_init_script() {
 
 cat << "EOF" > "/etc/init.d/${1}-fpm"
 #! /bin/sh
@@ -243,11 +241,30 @@ sed -i "s:&PATH&:${2}:g" "/etc/init.d/${1}-fpm"
 
 }
 
-function create_systemd_script {
-:
+# $1=php_name (like 'php70'), $2=php_path (like '/opt/php70')
+create_systemd_script() {
+
+cat << "EOF" > "/lib/systemd/system/${1}-fpm.service"
+[Unit]
+Description=The &NAME& FastCGI Process Manager
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=&PATH&/var/run/php-fpm.pid
+ExecStart=&PATH&/sbin/php-fpm --nodaemonize --fpm-config &PATH&/etc/php-fpm.conf
+ExecReload=/bin/kill -USR2 $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sed -i "s:&NAME&:${1}:g" "/lib/systemd/system/${1}-fpm.service"
+sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
+
 }
 
-function compile {
+compile() {
     ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
 
     ${COMPILE_PATH}/configure \
@@ -262,70 +279,88 @@ function compile {
         --with-kerberos --with-gettext --with-xmlrpc --with-webp-dir=/usr --with-xsl \
         --enable-opcache --enable-fpm
     check_return_code
-    
+
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
-    
+
     FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
-    
+
     make -C "${FOLDER_NAME}" -j"${CPU_COUNT}"
     check_return_code
-    
+
+    if [ -d "${CURRENT_PHP_PATH}" ]; then
+		systemctl stop "${CURRENT_PHP_NAME}-fpm.service"
+    fi
+
     make -C "${FOLDER_NAME}" install
     check_return_code
-    
+
 }
 
-function install {
-    if [ ! -d "${CURRENT_PHP_PATH}" ]; then
-        FPM_PORT=$(whiptail --title "PHP Compiler" --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 Blue  3>&1 1>&2 2>&3)
-        
-        cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
-        cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
-        
-        sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-  
-        if [ ${1} -lt 7 ]; then
-            cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
-            sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/' ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
-        else
-            sed -i 's/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-            echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-            check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
-        fi
-        
-        
-        
-        
-        
-        
-        
+install() {
+
+    FPM_PORT=$(whiptail --title "PHP Compiler" --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 Blue  3>&1 1>&2 2>&3)
+
+    cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
+    cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
+
+    sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+
+    if [ "${1}" -lt 7 ]; then
+        cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
+        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
+    else
+        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+        echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+        check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
     fi
-    
-    
+
+	create_init_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
+	chmod 755 "/etc/init.d/${CURRENT_PHP_NAME}-fpm"
+	insserv "${CURRENT_PHP_NAME}-fpm"
+
+	create_systemd_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
+
+	systemctl enable "${CURRENT_PHP_NAME}-fpm.service"
+	systemctl daemon-reload
+
+	echo "zend_extension=opcache.so" >> "${CURRENT_PHP_PATH}/lib/php.ini"
+
+	systemctl start "${CURRENT_PHP_NAME}-fpm.service"
 }
 
-function postinstall {
-:
+completed() {
+	echo "----------- COMPLETED: [${CURRENT_PHP_NAME}] -----------"
+	echo "FastCGI Settings:"
+	echo " - Path to the PHP FastCGI binary: ${CURRENT_PHP_PATH}/bin/php-cgi"
+	echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
+	echo "PHP-FPM Settings:"
+	echo " - Path to the PHP-FPM init script: /etc/init.d/${CURRENT_PHP_NAME}-fpm"
+	echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
+	echo " - Path to the PHP-FPM pool directory: ${CURRENT_PHP_PATH}/etc/php-fpm.d"
+	echo "--------------------------------------------------------"
 }
 
-function cleanup {
-:
+cleanup() {
+	rm -r "/usr/local/src/php-build/${FOLDER_NAME}"
+	rm -r "/usr/local/src/php-build/${ARCHIVE_NAME}"
 }
 
-function elaborate_selection {
+elaborate_selection() {
     for selection in "${USER_SELECTION[@]}"; do
-    
+
         CURRENT_PHP_NAME="php${selection:4:1}${selection:6:1}"
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
-        
+
         check_folder "${COMPILE_PATH}"
-	# TO CHECK
         download_extract "${VERSIONS[selection]}" "${CHECKSUM[selection]}"
-	# END TO CHECK
         compile
-        create_folder "${CURRENT_PHP_PATH}"
-        install ${selection:4:1}
-        postinstall
+        if [ ! -d "${CURRENT_PHP_PATH}" ]; then
+            check_folder "${CURRENT_PHP_PATH}"
+            install "${selection:4:1}"
+        else
+            systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
+        fi
+        completed
         cleanup
     done
 }
