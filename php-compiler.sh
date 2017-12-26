@@ -6,6 +6,7 @@
 COMPILE_PATH="/usr/local/src/php-build"
 CURRENT_PHP_PATH="" # /opt/php70
 CURRENT_PHP_NAME="" # php70
+OUTPUT=""
 
 #-- Helpers Functions
 
@@ -113,7 +114,13 @@ detect_distro() {
 }
 
 install_dependencies() {
-:
+	if [ "${DISTRO}" == "debian8" ]; then
+		apt-get -y install build-essential nano wget libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev
+	fi
+
+	if [ "${DISTRO}" == "ubuntu-16.04" ]; then
+		apt-get -y install build-essential nano wget libxml2-dev libjpeg62-dbg libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev
+	fi
 }
 
 get_menu() {
@@ -300,8 +307,11 @@ compile() {
 }
 
 install() {
-
-    FPM_PORT=$(whiptail --title "PHP Compiler" --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 Blue  3>&1 1>&2 2>&3)
+	_USED="x"
+	while [ ${_USED} -ne 0 ]; do
+        FPM_PORT=$(whiptail --title "PHP Compiler" --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 Blue  3>&1 1>&2 2>&3)
+        _USED=$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)
+	done
 
     cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
     cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
@@ -332,15 +342,15 @@ install() {
 }
 
 completed() {
-    echo "----------- COMPLETED: [${CURRENT_PHP_NAME}] -----------"
-    echo "FastCGI Settings:"
-    echo " - Path to the PHP FastCGI binary: ${CURRENT_PHP_PATH}/bin/php-cgi"
-    echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
-    echo "PHP-FPM Settings:"
-    echo " - Path to the PHP-FPM init script: /etc/init.d/${CURRENT_PHP_NAME}-fpm"
-    echo " - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib"
-    echo " - Path to the PHP-FPM pool directory: ${CURRENT_PHP_PATH}/etc/php-fpm.d"
-    echo "--------------------------------------------------------"
+    OUTPUT="${OUTPUT}----------- COMPLETED: [${CURRENT_PHP_NAME}] -----------\\n"
+    OUTPUT="${OUTPUT}FastCGI Settings:\\n"
+    OUTPUT="${OUTPUT} - Path to the PHP FastCGI binary: ${CURRENT_PHP_PATH}/bin/php-cgi\\n"
+    OUTPUT="${OUTPUT} - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib\\n"
+    OUTPUT="${OUTPUT}PHP-FPM Settings:\\n"
+    OUTPUT="${OUTPUT} - Path to the PHP-FPM init script: /etc/init.d/${CURRENT_PHP_NAME}-fpm\\n"
+    OUTPUT="${OUTPUT} - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib\\n"
+    OUTPUT="${OUTPUT} - Path to the PHP-FPM pool directory: ${CURRENT_PHP_PATH}/etc/php-fpm.d\\n"
+    OUTPUT="${OUTPUT}--------------------------------------------------------\\n"
 }
 
 cleanup() {
@@ -366,6 +376,7 @@ elaborate_selection() {
         completed
         cleanup
     done
+    echo "${OUTPUT}"
 }
 
 am_i_root
