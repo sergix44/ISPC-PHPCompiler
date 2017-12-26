@@ -14,6 +14,7 @@ check_return_code() {
         # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
+       rm -r "/usr/local/src/php-build/php*" 2&> /dev/null
        exit 500
     fi
 }
@@ -38,17 +39,18 @@ check_folder() {
 
 download_extract() {
     ARCHIVE_NAME=${1##*/}
+    FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
 
-    wget "${1}" -O "${ARCHIVE_NAME}"
+    wget "${1}" -O "${COMPILE_PATH}/${ARCHIVE_NAME}"
     check_return_code
 
-    if [ "$(sha256sum "${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
+    if [ "$(sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
         echo "Checksum mismatch, try to run the script again"
-        sha256sum "${ARCHIVE_NAME}"; echo
+        sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}"; echo
         exit 409
     fi
 
-    tar zxf "${ARCHIVE_NAME}"
+    tar zxf "${COMPILE_PATH}/${ARCHIVE_NAME}" -C "${COMPILE_PATH}"
     check_return_code
 }
 
@@ -117,18 +119,12 @@ detect_distro() {
 
 install_dependencies() {
 	if [ "${DISTRO}" == "debian8" ]; then
-		apt-get -y install build-essential nano wget libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev
+		apt-get -y install build-essential nano wget libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
 	fi
 
 	if [ "${DISTRO}" == "ubuntu-16.04" ]; then
 		apt-get -y install build-essential nano wget libxml2-dev libjpeg62-dbg libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev
 	fi
-}
-
-get_menu() {
-    # shellcheck disable=SC1090
-    source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
-    check_return_code
 }
 
 show_menu() {
@@ -279,7 +275,13 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 compile() {
     ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
 
-    ${COMPILE_PATH}/configure \
+	if [ "${1}" -lt 7 ]; then
+		webp="--with-vpx-dir=/usr"
+    else
+		webp="--with-webp-dir=/usr"
+    fi
+
+    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
@@ -288,22 +290,20 @@ compile() {
         --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data --with-libdir=/lib/x86_64-linux-gnu --enable-ftp --with-imap --with-imap-ssl \
-        --with-kerberos --with-gettext --with-xmlrpc --with-webp-dir=/usr --with-xsl \
-        --enable-opcache --enable-fpm
+        --with-kerberos --with-gettext --with-xmlrpc $webp --with-xsl \
+        --enable-opcache --enable-fpm)
     check_return_code
 
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
 
-    FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
-
-    make -C "${FOLDER_NAME}" -j"${CPU_COUNT}"
+    make -C "${COMPILE_PATH}/${FOLDER_NAME}" -j"${CPU_COUNT}"
     check_return_code
 
     if [ -d "${CURRENT_PHP_PATH}" ]; then
         systemctl stop "${CURRENT_PHP_NAME}-fpm.service"
     fi
 
-    make -C "${FOLDER_NAME}" install
+    make -C "${COMPILE_PATH}/${FOLDER_NAME}" install
     check_return_code
 
 }
@@ -362,13 +362,12 @@ cleanup() {
 
 elaborate_selection() {
     for selection in "${USER_SELECTION[@]}"; do
-
         CURRENT_PHP_NAME="php${selection:4:1}${selection:6:1}"
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
 
         check_folder "${COMPILE_PATH}"
-        download_extract "${VERSIONS[selection]}" "${CHECKSUM[selection]}"
-        compile
+        download_extract "${VERSIONS[$selection]}" "${CHECKSUM[$selection]}"
+        compile "${selection:4:1}"
         if [ ! -d "${CURRENT_PHP_PATH}" ]; then
             check_folder "${CURRENT_PHP_PATH}"
             install "${selection:4:1}"
@@ -378,13 +377,17 @@ elaborate_selection() {
         completed
         cleanup
     done
-    echo "${OUTPUT}"
+    echo -e "${OUTPUT}"
 }
 
 am_i_root
 detect_distro
 install_utils
 install_dependencies
-get_menu
+
+# shellcheck disable=SC1090
+source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
+check_return_code
+
 show_menu
 elaborate_selection
