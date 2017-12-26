@@ -19,9 +19,11 @@ check_return_code() {
 }
 
 install_utils() {
-    if "${DISTRO}" == "centos7"; then
+    if [ "${DISTRO}" == "centos7" ]; then
+        yum -y update
         yum -y install whiptail curl
     else
+        apt-get update && apt-get -y upgrade
         apt-get -y install whiptail curl
     fi
     check_return_code
@@ -105,10 +107,10 @@ detect_distro() {
     DISTRO=centos7
     fi
 
-    if "${DISTRO}" == ""; then
-    echo "Your distro is not supported"
-    echo "You can add it and make a PR ;)"
-    exit 404
+    if [ "${DISTRO}" == "" ]; then
+	    echo "Your distro is not supported"
+	    echo "You can add it and make a PR ;)"
+	    exit 404
     fi
 
 }
