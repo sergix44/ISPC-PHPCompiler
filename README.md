@@ -12,6 +12,16 @@ Just run this command in your shell to download and run the script, and then jus
 ```bash
 wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/php-compiler.sh; bash php-compiler.sh
 ```
+# Currently supported platforms
+Checked entries are also successfully tested.
+- [ ] Debian 7
+- [x] Debian 8
+- [ ] Debian 9
+- [ ] CentOS 7
+- [ ] Ubuntu 14.04
+- [ ] Ubuntu 15.10
+- [ ] Ubuntu 16.04
+- [ ] Ubuntu 16.10
 
 # Contributors
 - [Sergio Brighenti](https://github.com/SergiX44)
