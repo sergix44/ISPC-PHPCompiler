@@ -325,14 +325,9 @@ install() {
 
     sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
 
-    if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
-        cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
-        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
-    else
-        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-        echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-        check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
-    fi
+    sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+    echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+    check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
 
     create_init_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
     chmod 755 "/etc/init.d/${CURRENT_PHP_NAME}-fpm"
