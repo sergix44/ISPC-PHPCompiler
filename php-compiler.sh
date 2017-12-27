@@ -321,7 +321,7 @@ install() {
 	FPM_PORT=$(shuf -i 2000-50000 -n 1)
     else
 	while :; do
-		FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 ""  3>&1 1>&2 2>&3)
+		FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 10 40 ""  3>&1 1>&2 2>&3)
 		if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
 		    break
 		fi
