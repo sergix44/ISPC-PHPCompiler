@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# File with all PHP version supported (with super epic multi dimensional arrays home made)
-# Download link and chesum from php.net/downloads.php
+# File with all PHP version supported
+# Download link and checksum from php.net/downloads.php
 
 # All PHP versions
 # shellcheck disable=SC2034
