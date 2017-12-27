@@ -309,10 +309,11 @@ compile() {
 }
 
 install() {
-	_USED="x"
-	while [ ${_USED} -ne 0 ]; do
-        FPM_PORT=$(whiptail --title "PHP Compiler" --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 Blue  3>&1 1>&2 2>&3)
-        _USED=$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)
+	while :; do
+		FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 ""  3>&1 1>&2 2>&3)
+		if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
+			break
+		fi
 	done
 
     cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
@@ -356,8 +357,8 @@ completed() {
 }
 
 cleanup() {
-    rm -r "/usr/local/src/php-build/${FOLDER_NAME}"
-    rm -r "/usr/local/src/php-build/${ARCHIVE_NAME}"
+    rm -r "${COMPILE_PATH:?}/${FOLDER_NAME}"
+    rm -r "${COMPILE_PATH:?}/${ARCHIVE_NAME}"
 }
 
 elaborate_selection() {
