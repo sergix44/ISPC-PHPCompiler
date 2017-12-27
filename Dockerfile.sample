@@ -1,0 +1,10 @@
+FROM &&OS&&:&&DIST&&
+
+ADD php-compiler.sh /root/
+RUN chmod +x /root/php-compiler.sh
+RUN bash /root/php-compiler.sh
+
+RUN /bin/systemctl start php56-fpm.service
+RUN /bin/systemctl start php70-fpm.service
+RUN /bin/systemctl start php71-fpm.service
+RUN /bin/systemctl start php72-fpm.service

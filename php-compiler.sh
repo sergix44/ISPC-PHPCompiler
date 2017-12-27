@@ -23,10 +23,10 @@ install_utils() {
 	echo -e "Do OS updates..."
     if [ "${DISTRO}" == "centos7" ]; then
         yum -y update
-        yum -y install whiptail curl
+        yum -y install whiptail curl wget
     else
         apt-get update && apt-get -y upgrade
-        apt-get -y install whiptail curl
+        apt-get -y install whiptail curl wget
     fi
     check_return_code
 }
@@ -316,12 +316,17 @@ compile() {
 }
 
 install() {
-    while :; do
-        FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 ""  3>&1 1>&2 2>&3)
-        if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
-            break
-        fi
-    done
+    # shellcheck disable=SC2086
+    if [ $TRAVIS == "true" ]; then
+	FPM_PORT=$(shuf -i 2000-50000 -n 1)
+    else
+	while :; do
+		FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 ""  3>&1 1>&2 2>&3)
+		if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
+		    break
+		fi
+	done
+    fi
 
     cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
     cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
@@ -400,5 +405,12 @@ install_dependencies
 source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 check_return_code
 
-show_menu
+# shellcheck disable=SC2086
+if [ $TRAVIS == "true" ]; then
+	 # shellcheck disable=SC2124
+	declare -a USER_SELECTION=${!VERSIONS[@]}
+else
+	show_menu
+fi
+
 elaborate_selection

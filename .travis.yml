@@ -1,10 +1,28 @@
-language: bash
+language: generic
+
+services:
+  - docker
+
+env:
+  matrix:
+    - OS=centos DIST=6
+    - OS=centos DIST=7
+    - OS=ubuntu DIST=trusty
+    - OS=ubuntu DIST=xenial
+    - OS=ubuntu DIST=yakkety
+    - OS=debian DIST=wheezy
+    - OS=debian DIST=jessie
+    - OS=debian DIST=stretch
+
 addons:
   apt:
     sources:
     - debian-sid
     packages:
     - shellcheck
+    
 script:
   - shellcheck versions.sh
   - shellcheck php-compiler.sh
+  - sed -e "s/&&OS&&/${OS}/g" ./Dockerfile.sample | sed -e "s/&&DIST&&/${DIST}/g" | tee Dockerfile
+  - docker build -t pe46dro/ispc-php .
