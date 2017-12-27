@@ -20,6 +20,7 @@ check_return_code() {
 }
 
 install_utils() {
+	echo -e "Do OS updates..."
     if [ "${DISTRO}" == "centos7" ]; then
         yum -y update
         yum -y install whiptail curl
@@ -32,6 +33,7 @@ install_utils() {
 
 check_folder() {
     if [ ! -d "${1}" ]; then
+        echo -e "Creating directory ${1}..."
         mkdir -p "${1}"
         check_return_code
     fi
@@ -41,13 +43,16 @@ download_extract() {
     ARCHIVE_NAME=${1##*/}
     FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
 
+	echo -e "Downloading ${1}..."
     wget "${1}" -O "${COMPILE_PATH}/${ARCHIVE_NAME}"
     check_return_code
 
     if [ "$(sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
-        echo "Checksum mismatch, try to run the script again"
+        echo -e "Checksum mismatch, try to run the script again"
         sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}"; echo
         exit 409
+    else
+        echo -e "Checksum matched!"
     fi
 
     tar zxf "${COMPILE_PATH}/${ARCHIVE_NAME}" -C "${COMPILE_PATH}"
@@ -71,42 +76,42 @@ detect_distro() {
     DISTRO=""
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-7"; then
-    DISTRO=debian7
+        DISTRO=debian7
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-8"; then
-    DISTRO=debian8
+        DISTRO=debian8
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-9"; then
-    DISTRO=debian9
+        DISTRO=debian9
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-14.04"; then
-    DISTRO=ubuntu-14.04
+        DISTRO=ubuntu-14.04
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-15.10"; then
-    DISTRO=ubuntu-15.10
+        DISTRO=ubuntu-15.10
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.04"; then
-    DISTRO=ubuntu-16.04
+        DISTRO=ubuntu-16.04
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.10"; then
-    DISTRO=ubuntu-16.10
+        DISTRO=ubuntu-16.10
     fi
 
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "centos-7"; then
-    DISTRO=centos7
+        DISTRO=centos7
     fi
 
     if [ "${DISTRO}" == "" ]; then
@@ -269,7 +274,6 @@ EOF
 
 sed -i "s:&NAME&:${1}:g" "/lib/systemd/system/${1}-fpm.service"
 sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
-
 }
 
 compile() {
@@ -300,12 +304,12 @@ compile() {
     check_return_code
 
     if [ -d "${CURRENT_PHP_PATH}" ]; then
+        echo -e "Stopping services..."
         systemctl stop "${CURRENT_PHP_NAME}-fpm.service"
     fi
 
     make -C "${COMPILE_PATH}/${FOLDER_NAME}" install
     check_return_code
-
 }
 
 install() {
@@ -353,7 +357,7 @@ completed() {
     OUTPUT="${OUTPUT} - Path to the PHP-FPM init script: /etc/init.d/${CURRENT_PHP_NAME}-fpm\\n"
     OUTPUT="${OUTPUT} - Path to the php.ini directory: ${CURRENT_PHP_PATH}/lib\\n"
     OUTPUT="${OUTPUT} - Path to the PHP-FPM pool directory: ${CURRENT_PHP_PATH}/etc/php-fpm.d\\n"
-    OUTPUT="${OUTPUT}--------------------------------------------------------\\n"
+    OUTPUT="${OUTPUT}------------------------------------------\\n"
 }
 
 cleanup() {
@@ -367,13 +371,20 @@ elaborate_selection() {
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
         CURRENT_PHP_VERSION="${selection:4:1}"
 
+		echo -e "Checking compile path..."
         check_folder "${COMPILE_PATH}"
+
+        echo -e "Downloading ${selection}..."
         download_extract "${VERSIONS[$selection]}" "${CHECKSUM[$selection]}"
-        compile
+
+        echo -e "Compiling..."
         if [ ! -d "${CURRENT_PHP_PATH}" ]; then
-            check_folder "${CURRENT_PHP_PATH}"
+            compile
+            echo -e "First time setup..."
             install
         else
+            compile
+            echo -e "Restarting services..."
             systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
         fi
         completed
