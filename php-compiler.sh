@@ -110,21 +110,21 @@ detect_distro() {
     fi
 
     if [ "${DISTRO}" == "" ]; then
-	    echo "Your distro is not supported"
-	    echo "You can add it and make a PR ;)"
-	    exit 404
+        echo "Your distro is not supported"
+        echo "You can add it and make a PR ;)"
+        exit 404
     fi
 
 }
 
 install_dependencies() {
-	if [ "${DISTRO}" == "debian8" ]; then
-		apt-get -y install build-essential nano wget libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
-	fi
+    if [ "${DISTRO}" == "debian8" ]; then
+        apt-get -y install build-essential nano wget libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+    fi
 
-	if [ "${DISTRO}" == "ubuntu-16.04" ]; then
-		apt-get -y install build-essential nano wget libxml2-dev libjpeg62-dbg libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev
-	fi
+    if [ "${DISTRO}" == "ubuntu-16.04" ]; then
+        apt-get -y install build-essential nano wget libxml2-dev libjpeg62-dbg libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev
+    fi
 }
 
 show_menu() {
@@ -275,10 +275,10 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 compile() {
     ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
 
-	if [ "${1}" -lt 7 ]; then
-		webp="--with-vpx-dir=/usr"
+    if [ "${1}" -lt 7 ]; then
+        webp="--with-vpx-dir=/usr"
     else
-		webp="--with-webp-dir=/usr"
+        webp="--with-webp-dir=/usr"
     fi
 
     (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure \
@@ -309,12 +309,12 @@ compile() {
 }
 
 install() {
-	while :; do
-		FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 ""  3>&1 1>&2 2>&3)
-		if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
-			break
-		fi
-	done
+    while :; do
+        FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 15 35 ""  3>&1 1>&2 2>&3)
+        if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
+            break
+        fi
+    done
 
     cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
     cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
