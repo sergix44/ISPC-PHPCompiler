@@ -4,8 +4,8 @@
 #-- Globals
 
 COMPILE_PATH="/usr/local/src/php-build"
-CURRENT_PHP_PATH="" # /opt/php70
-CURRENT_PHP_NAME="" # php70
+CURRENT_PHP_PATH="" # like /opt/php70
+CURRENT_PHP_NAME="" # like php70
 OUTPUT=""
 
 #-- Helpers Functions
