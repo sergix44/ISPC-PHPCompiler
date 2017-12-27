@@ -405,12 +405,14 @@ install_dependencies
 source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 check_return_code
 
-# shellcheck disable=SC2086
 if [ -f /.dockerenv ]; then
-	 # shellcheck disable=SC2124
-	declare -a USER_SELECTION=${!VERSIONS[@]}
+    USER_SELECTION=()
+
+    for version in "${!VERSIONS[@]}"; do
+        USER_SELECTION+=( "${version}" )
+    done
 else
-	show_menu
+    show_menu
 fi
 
 elaborate_selection
