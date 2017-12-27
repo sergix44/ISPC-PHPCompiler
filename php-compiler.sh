@@ -14,7 +14,7 @@ check_return_code() {
         # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
-       rm -r "/usr/local/src/php-build/php*" 2&> /dev/null
+       rm -r "${COMPILE_PATH:?}/php*" 2&> /dev/null
        exit 500
     fi
 }
@@ -275,7 +275,7 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 compile() {
     ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
 
-    if [ "${1}" -lt 7 ]; then
+    if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
         webp="--with-vpx-dir=/usr"
     else
         webp="--with-webp-dir=/usr"
@@ -321,7 +321,7 @@ install() {
 
     sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
 
-    if [ "${1}" -lt 7 ]; then
+    if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
         cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
         sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
     else
@@ -362,16 +362,17 @@ cleanup() {
 }
 
 elaborate_selection() {
-    for selection in "${USER_SELECTION[@]}"; do
+    for selection in "${USER_SELECTION[@]//\"/}"; do
         CURRENT_PHP_NAME="php${selection:4:1}${selection:6:1}"
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
+        CURRENT_PHP_VERSION="${selection:4:1}"
 
         check_folder "${COMPILE_PATH}"
         download_extract "${VERSIONS[$selection]}" "${CHECKSUM[$selection]}"
-        compile "${selection:4:1}"
+        compile
         if [ ! -d "${CURRENT_PHP_PATH}" ]; then
             check_folder "${CURRENT_PHP_PATH}"
-            install "${selection:4:1}"
+            install
         else
             systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
         fi
