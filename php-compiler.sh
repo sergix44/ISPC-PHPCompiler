@@ -136,7 +136,9 @@ install_dependencies() {
 show_menu() {
     menu=()
 
-    for version in "${!VERSIONS[@]}"; do
+    readarray -t _sorted < <(printf '%s\n' "${!VERSIONS[@]}" | sort)
+
+    for version in "${_sorted[@]}"; do
         menu+=( "${version}" "" OFF )
     done
 
