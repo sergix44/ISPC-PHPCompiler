@@ -314,6 +314,7 @@ compile() {
 }
 
 install() {
+    # shellcheck disable=SC2086
     if [ $TRAVIS == "true" ]; then
 	FPM_PORT=$(shuf -i 2000-50000 -n 1)
     else
@@ -402,7 +403,9 @@ install_dependencies
 source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 check_return_code
 
+# shellcheck disable=SC2086
 if [ $TRAVIS == "true" ]; then
+	 # shellcheck disable=SC2124
 	declare -a USER_SELECTION=${!VERSIONS[@]}
 else
 	show_menu
