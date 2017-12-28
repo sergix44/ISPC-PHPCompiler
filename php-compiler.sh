@@ -75,11 +75,6 @@ detect_distro() {
 
     DISTRO=""
 
-    if echo "${ID}-${VERSION_ID}" | grep -iq "debian-7"; then
-        DISTRO=debian7
-    fi
-
-
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-8"; then
         DISTRO=debian8
     fi
@@ -95,18 +90,13 @@ detect_distro() {
     fi
 
 
-    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-15.10"; then
-        DISTRO=ubuntu-15.10
-    fi
-
-
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.04"; then
         DISTRO=ubuntu-16.04
     fi
 
 
-    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-16.10"; then
-        DISTRO=ubuntu-16.10
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-17.04"; then
+        DISTRO=ubuntu-17.04
     fi
 
 
@@ -132,9 +122,18 @@ install_dependencies() {
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
     fi
 
-    if [ "${DISTRO}" == "ubuntu-16.04" ]; then
-        apt-get -y install build-essential autoconf libxml2-dev libjpeg62-dbg libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+    if [ "${DISTRO}" == "ubuntu-14.04" ]; then
+         apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
     fi
+
+    if [ "${DISTRO}" == "ubuntu-16.04" ]; then
+         apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+    fi
+
+    if [ "${DISTRO}" == "ubuntu-17.04" ]; then
+         apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+    fi
+
     check_return_code
 }
 
