@@ -333,14 +333,19 @@ install() {
 	done
     fi
 
-    cp "/usr/local/src/php-build/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
+    cp "${COMPILE_PATH}/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
     cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
 
     sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
 
-    sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-    echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-    check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
+    if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
+        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+	    echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+	    check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
+    else
+        cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
+        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
+    fi
 
     create_init_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
     chmod 755 "/etc/init.d/${CURRENT_PHP_NAME}-fpm"
@@ -378,6 +383,11 @@ elaborate_selection() {
         CURRENT_PHP_NAME="php${selection:4:1}${selection:6:1}"
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
         CURRENT_PHP_VERSION="${selection:4:1}"
+
+        if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
+            echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
+            continue
+        fi
 
 		echo -e "Checking compile path..."
         check_folder "${COMPILE_PATH}"
