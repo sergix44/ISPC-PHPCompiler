@@ -421,11 +421,7 @@ source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bas
 check_return_code
 
 if [ -f /.dockerenv ]; then
-    USER_SELECTION=()
-
-    for version in "${!VERSIONS[@]}"; do
-        USER_SELECTION+=( "${version}" )
-    done
+    USER_SELECTION=( $1 )
 else
     show_menu
 fi
