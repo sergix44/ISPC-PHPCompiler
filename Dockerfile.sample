@@ -2,6 +2,6 @@ FROM &&OS&&:&&DIST&&
 
 ADD php-compiler.sh /root/
 RUN chmod +x /root/php-compiler.sh
-RUN bash /root/php-compiler.sh &&PHPVL&&
+RUN bash /root/php-compiler.sh "&&PHPVL&&"
 
 RUN /etc/init.d/&&PHPVS&&-fpm start
