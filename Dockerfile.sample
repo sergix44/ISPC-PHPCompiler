@@ -4,7 +4,7 @@ ADD php-compiler.sh /root/
 RUN chmod +x /root/php-compiler.sh
 RUN bash /root/php-compiler.sh
 
-RUN /bin/systemctl is-active php56-fpm.service
-RUN /bin/systemctl is-active php70-fpm.service
-RUN /bin/systemctl is-active php71-fpm.service
-RUN /bin/systemctl is-active php72-fpm.service
+RUN /etc/init.d/php56-fpm start
+RUN /etc/init.d/php70-fpm start
+RUN /etc/init.d/php71-fpm start
+RUN /etc/init.d/php72-fpm start
