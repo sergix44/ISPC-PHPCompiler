@@ -168,7 +168,7 @@ php_fpm_BIN=&PATH&/sbin/php-fpm
 php_fpm_CONF=&PATH&/etc/php-fpm.conf
 php_fpm_PID=&PATH&/var/run/php-fpm.pid
 php_opts="--fpm-config $php_fpm_CONF"
-wait_for_pid () {{
+wait_for_pid () {
         try=0
         while test $try -lt 35 ; do
                 case "$1" in
@@ -189,7 +189,7 @@ wait_for_pid () {{
                 try=`expr $try + 1`
                 sleep 1
         done
-}}
+}
 case "$1" in
         start)
                 echo -n "Starting php-fpm "
