@@ -1,4 +1,4 @@
-# PHP Compiler Script 🚀
+# 🚀 PHP Compiler Script [![Build Status](https://travis-ci.org/SergiX44/ISPC-PHPCompiler.svg?branch=bash-version)](https://travis-ci.org/SergiX44/ISPC-PHPCompiler)
 
 **WARNING: CURRENT IN A WIP STAGE**
 
@@ -14,14 +14,12 @@ wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/ph
 ```
 # Currently supported platforms
 Checked entries are also successfully tested.
-- [ ] Debian 7
 - [x] Debian 8
-- [ ] Debian 9
-- [ ] CentOS 7
-- [ ] Ubuntu 14.04
-- [ ] Ubuntu 15.10
-- [ ] Ubuntu 16.04
-- [ ] Ubuntu 16.10
+- [x] Debian 9
+- [x] CentOS 7
+- [x] Ubuntu 14.04
+- [x] Ubuntu 16.04
+- [x] Ubuntu 17.04
 
 # Contributors
 - [Sergio Brighenti](https://github.com/SergiX44)
