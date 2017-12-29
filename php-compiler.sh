@@ -20,7 +20,7 @@ check_return_code() {
 }
 
 install_utils() {
-	echo -e "Do OS updates..."
+    echo -e "Do OS updates..."
     if [ "${DISTRO}" == "centos7" ]; then
         yum -y update
         yum -y install whiptail curl wget
@@ -43,7 +43,7 @@ download_extract() {
     ARCHIVE_NAME=${1##*/}
     FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
 
-	echo -e "Downloading ${1}..."
+    echo -e "Downloading ${1}..."
     wget "${1}" -O "${COMPILE_PATH}/${ARCHIVE_NAME}"
     check_return_code
 
@@ -114,30 +114,35 @@ detect_distro() {
 
 install_dependencies() {
     if [ "${DISTRO}" == "debian8" ]; then
-		apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
         check_return_code
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian9" ]; then
-		apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev
-		check_return_code
-		ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev
+        check_return_code
+        ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-14.04" ]; then
-		apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+        apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
         check_return_code
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-16.04" ]; then
-		apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
+        apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev
         check_return_code
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-17.04" ]; then
-		apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev
-		check_return_code
-		ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev
+        check_return_code
+        ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "centos7" ]; then
@@ -297,13 +302,9 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 
 compile() {
 
-	if [ "${DISTRO}" != "centos7" ]; then
-        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
-    fi
-
-	if [ "${DISTRO}" == "centos7" ]; then
-		libdir="--with-libdir=lib64"
-	else
+    if [ "${DISTRO}" == "centos7" ]; then
+        libdir="--with-libdir=lib64"
+    else
         libdir="--with-libdir=/lib/x86_64-linux-gnu"
     fi
 
@@ -343,17 +344,17 @@ compile() {
 install() {
     # shellcheck disable=SC2086
     if [ -f /.dockerenv ]; then
-		FPM_PORT=$(shuf -i 2000-50000 -n 1)
-		if [ "${DISTRO}" == "centos7" ]; then
-			useradd -M www-data
-		fi
+        FPM_PORT=$(shuf -i 2000-50000 -n 1)
+        if [ "${DISTRO}" == "centos7" ]; then
+            useradd -M www-data
+        fi
     else
-		while :; do
-			FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 10 40 ""  3>&1 1>&2 2>&3)
-			if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
-			    break
-			fi
-		done
+        while :; do
+            FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 10 40 ""  3>&1 1>&2 2>&3)
+            if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
+                break
+            fi
+        done
     fi
 
     cp "${COMPILE_PATH}/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
@@ -363,8 +364,8 @@ install() {
 
     if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
         sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-	    echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-	    check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
+        echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+        check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
     else
         cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
         sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
@@ -403,6 +404,7 @@ cleanup() {
 
 elaborate_selection() {
     for selection in "${USER_SELECTION[@]//\"/}"; do
+        
         CURRENT_PHP_NAME="php${selection:4:1}${selection:6:1}"
         CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
         CURRENT_PHP_VERSION="${selection:4:1}"
@@ -412,7 +414,7 @@ elaborate_selection() {
             continue
         fi
 
-		echo -e "Checking compile path..."
+        echo -e "Checking compile path..."
         check_folder "${COMPILE_PATH}"
 
         echo -e "Downloading ${selection}..."
