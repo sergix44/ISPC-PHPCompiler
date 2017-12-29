@@ -343,14 +343,17 @@ compile() {
 install() {
     # shellcheck disable=SC2086
     if [ -f /.dockerenv ]; then
-	FPM_PORT=$(shuf -i 2000-50000 -n 1)
-    else
-	while :; do
-		FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 10 40 ""  3>&1 1>&2 2>&3)
-		if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
-		    break
+		FPM_PORT=$(shuf -i 2000-50000 -n 1)
+		if [ "${DISTRO}" == "centos7" ]; then
+			useradd -M www-data
 		fi
-	done
+    else
+		while :; do
+			FPM_PORT=$(whiptail --title "PHP Compiler" --nocancel --inputbox "Choose the FPM port for ${CURRENT_PHP_NAME}" 10 40 ""  3>&1 1>&2 2>&3)
+			if [ "$(netstat -tunl | grep -P "^(?=.*LISTEN)(?=.*${FPM_PORT})" -c)" -eq 0 ]; then
+			    break
+			fi
+		done
     fi
 
     cp "${COMPILE_PATH}/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
