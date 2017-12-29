@@ -1,6 +1,4 @@
-# 🚀 PHP Compiler Script [![Build Status](https://travis-ci.org/SergiX44/ISPC-PHPCompiler.svg?branch=bash-version)](https://travis-ci.org/SergiX44/ISPC-PHPCompiler)
-
-**WARNING: CURRENT IN A WIP STAGE**
+# 🚀 The PHP Compiler Script [![Build Status](https://travis-ci.org/SergiX44/ISPC-PHPCompiler.svg?branch=bash-version)](https://travis-ci.org/SergiX44/ISPC-PHPCompiler)
 
 This script will help you to manage different PHP version for your webserver (especially made for ISPConfig installations). 
 This supports **auto compiling and auto configure feature** for PHP >= 5.6. See the versions.sh file to see them.
@@ -22,5 +20,5 @@ Checked entries are also successfully tested.
 - [x] Ubuntu 17.04
 
 # Contributors
-- [Sergio Brighenti](https://github.com/SergiX44)
-- [Pietro Marangon](https://github.com/Pe46dro)
+- [Sergio Brighenti (SergiX44)](https://github.com/SergiX44)
+- [Pietro Marangon (Pe46dro)](https://github.com/Pe46dro)
