@@ -78,10 +78,12 @@ detect_distro() {
     if echo "${ID}-${VERSION_ID}" | grep -iq "devuan-1"; then
         DISTRO=devuan1
     fi
-    
+
+
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-8"; then
         DISTRO=debian8
     fi
+
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-9"; then
         DISTRO=debian9
