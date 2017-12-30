@@ -46,5 +46,5 @@ addons:
 script:
   - shellcheck versions.sh
   - shellcheck php-compiler.sh
-  - sed -e "s/&&OS&&/${OS}/g" ./Dockerfile.sample | sed -e "s/&&DIST&&/${DIST}/g" | sed -e "s/&&PHPVL&&/${PHPV}/g" | sed -e "s/&&PHPVS&&/php${PHPV:4:1}${PHPV:6:1}/g" | tee Dockerfile
-  - docker build -t pe46dro/ispc-php .
+  - sed -e "s:&&OS&&:${OS}:g" ./Dockerfile.sample | sed -e "s:&&DIST&&:${DIST}:g" | sed -e "s:&&PHPVL&&:${PHPV}:g" | sed -e "s:&&PHPVS&&:php${PHPV:4:1}${PHPV:6:1}:g" | tee Dockerfile
+  - docker build -t sergix44/ISPC-PHPCompiler .
