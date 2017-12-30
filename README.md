@@ -21,6 +21,6 @@ Checked entries are also successfully tested.
 - [x] Ubuntu 17.04
 
 # Contributors
-[<img src="https://www.gravatar.com/avatar/98b8d56f4a193e3f7154f236c16930b2?s=100" alt="" height="100">](https://github.com/davegandy) | [<img src="https://www.gravatar.com/avatar/35923b3b04e23bef801553656b606bfag?s=100" alt="" height="100">](https://github.com/pe46dro)
+[<img src="https://www.gravatar.com/avatar/98b8d56f4a193e3f7154f236c16930b2?s=100" alt="" height="100">](https://github.com/SergiX44) | [<img src="https://www.gravatar.com/avatar/35923b3b04e23bef801553656b606bfag?s=100" alt="" height="100">](https://github.com/Pe46dro)
 ---|---|
-[Sergix44](https://github.com/Sergix44) | [Pe46dro](https://github.com/pe46dro)
+[SergiX44](https://github.com/SergiX44) | [Pe46dro](https://github.com/Pe46dro)
