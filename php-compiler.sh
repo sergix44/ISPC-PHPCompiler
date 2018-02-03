@@ -11,7 +11,7 @@ OUTPUT=""
 #-- Helpers Functions
 
 check_return_code() {
-        # shellcheck disable=SC2181
+	# shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
        rm -r "${COMPILE_PATH:?}/php*" 2&> /dev/null
@@ -55,6 +55,7 @@ download_extract() {
         echo -e "Checksum matched!"
     fi
 
+	echo -e "Extracting ${ARCHIVE_NAME}..."
     tar zxf "${COMPILE_PATH}/${ARCHIVE_NAME}" -C "${COMPILE_PATH}"
     check_return_code
 }
@@ -171,10 +172,10 @@ show_menu() {
     readarray -t _sorted < <(printf '%s\n' "${!VERSIONS[@]}" | sort)
 
     for version in "${_sorted[@]}"; do
-        menu+=( "${version}" "" OFF )
+        menu+=( "${version}" "" )
     done
 
-    USER_SELECTION=$(whiptail --title "PHP Compiler" --checklist "Select PHP versions to install or update:" 15 35 "$((${#menu[@]}/3))" "${menu[@]}" 3>&1 1>&2 2>&3)
+    USER_SELECTION=$(whiptail --title "PHP Compiler" --menu "Install or update:" $((${#menu[@]}+10)) 30 ${#menu[@]} "${menu[@]}" 3>&1 1>&2 2>&3)
 }
 
 # $1=php_name (like 'php70'), $2=php_path (like '/opt/php70')
@@ -414,36 +415,39 @@ cleanup() {
 }
 
 elaborate_selection() {
-    for selection in "${USER_SELECTION[@]//\"/}"; do
-        
-        CURRENT_PHP_NAME="php${selection:4:1}${selection:6:1}"
-        CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
-        CURRENT_PHP_VERSION="${selection:4:1}"
 
-        if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
-            echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
-            continue
-        fi
+	if [ "${USER_SELECTION}" == "" ]; then
+		echo -e "Installation aborted."
+		exit
+	fi
 
-        echo -e "Checking compile path..."
-        check_folder "${COMPILE_PATH}"
+    escaped_selection="${USER_SELECTION//\"/}"
+    CURRENT_PHP_NAME="php${escaped_selection:4:1}${escaped_selection:6:1}"
+    CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
+    CURRENT_PHP_VERSION="${escaped_selection:4:1}"
 
-        echo -e "Downloading ${selection}..."
-        download_extract "${VERSIONS[$selection]}" "${CHECKSUM[$selection]}"
+    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
+        echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
+        exit
+    fi
 
-        echo -e "Compiling..."
-        if [ ! -d "${CURRENT_PHP_PATH}" ]; then
-            compile
-            echo -e "First time setup..."
-            install
-        else
-            compile
-            echo -e "Restarting services..."
-            systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
-        fi
-        completed
-        cleanup
-    done
+    echo -e "Checking compile path..."
+    check_folder "${COMPILE_PATH}"
+
+    download_extract "${VERSIONS[$USER_SELECTION]}" "${CHECKSUM[$USER_SELECTION]}"
+
+    echo -e "Compiling..."
+    if [ ! -d "${CURRENT_PHP_PATH}" ]; then
+        compile
+        echo -e "First time setup..."
+        install
+    else
+        compile
+        echo -e "Restarting services..."
+        systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
+    fi
+    completed
+    cleanup
     echo -e "${OUTPUT}"
 }
 
@@ -457,7 +461,7 @@ source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bas
 check_return_code
 
 if [ -f /.dockerenv ]; then
-    USER_SELECTION=( "${1}" )
+    USER_SELECTION="${1}"
 else
     show_menu
 fi
