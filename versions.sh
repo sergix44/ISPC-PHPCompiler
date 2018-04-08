@@ -14,8 +14,8 @@ declare -A VERSIONS=(
 # All PHP versions checksum
 # shellcheck disable=SC2034
 declare -A CHECKSUM=(
-    ["PHP 5.6.35"]="de28251ef6d7eb945eb7b770ff668b9f978d9adad52a8c763f6ee409a96732ea"
-    ["PHP 7.0.29"]="cd2fd94feb0d5809ffb9d900138643fa74e70656436e5f2595b03239dd97aa9c"
-    ["PHP 7.1.16"]="0669c68a52cbd2f1cfa83354918ed03b0bcaa34ed9bafaee7dfd343461b881d4"
-    ["PHP 7.2.4"]="5dc98f2266db40c5e4d9b5edf5e29e2449e819fff8321a07eb3830cf0b104bbb"
+    ["PHP 5.6.35"]="dd0242304f510d48a5216dd2f5796bcf59e8e18366658259aaf205e1d63abf71"
+    ["PHP 7.0.29"]="5efe45e345f967cb20f9ff92cd514753872a65feffea1bf311c71864344bd8e8"
+    ["PHP 7.1.16"]="c8e6fed5b350b29a5b9eaa9fce7c5e8618629346e9a58212f3dc380046065442"
+    ["PHP 7.2.4"]="58e28e978baea0fe9009432bcb436934eaacccfdcb5f5409c7526431a595857b"
 )
