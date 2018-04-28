@@ -7,6 +7,7 @@ COMPILE_PATH="/usr/local/src/php-build"
 CURRENT_PHP_PATH="" # like /opt/php70
 CURRENT_PHP_NAME="" # like php70
 OUTPUT=""
+CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
 
 #-- Helpers Functions
 
@@ -338,6 +339,12 @@ compile() {
         webp="--with-webp-dir=/usr"
     fi
 
+    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
+        openssl="--with-openssl=/opt/openssl"
+    else
+        openssl="--with-openssl"
+    fi
+    
     (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
@@ -345,13 +352,11 @@ compile() {
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
         --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
-        --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
+        --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf ${openssl} --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-fpm)
     check_return_code
-
-    CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
 
     make -C "${COMPILE_PATH}/${FOLDER_NAME}" -j"${CPU_COUNT}"
     check_return_code
@@ -439,8 +444,23 @@ elaborate_selection() {
     CURRENT_PHP_VERSION="${escaped_selection:4:1}"
 
     if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
-        echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
-        exit
+        echo "Compiling an older version in /opt/openssl"
+	
+	cd /tmp
+	wget "https://www.openssl.org/source/old/1.0.1/openssl-1.0.1t.tar.gz"
+	tar xzf openssl-1.0.1t.tar.gz 
+	cd openssl-1.0.1t
+	./config shared --prefix=/opt/openssl
+	make -j ${CPU_COUNT} && make install
+	ln -s /opt/openssl/lib /opt/openssl/lib/x86_64-linux-gnu
+	wget -O /opt/openssl/ssl/cert.pem "http://curl.haxx.se/ca/cacert.pem"
+	
+	mkdir /usr/include/freetype2/freetype
+	ln -s /usr/include/freetype2/freetype.h /usr/include/freetype2/freetype/freetype.h
+	ln -s /opt/openssl/lib/libcrypto.so.1.0.0 /usr/lib/x86_64-linux-gnu/
+	ln -s /opt/openssl/lib/libssl.so.1.0.0 /usr/lib/x86_64-linux-gnu/
+	ln -fs /opt/openssl /usr/local/ssl
+	
     fi
 
     echo -e "Checking compile path..."
