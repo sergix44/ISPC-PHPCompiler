@@ -35,14 +35,7 @@ env:
     - OS=debian DIST=8 PHPV="PHP 7.2.4"
     - OS=debian DIST=9 PHPV="PHP 7.2.4"
     - OS="rockyluke/devuan" DIST=1 PHPV="PHP 7.2.4"
-    
-addons:
-  apt:
-    sources:
-    - debian-sid
-    packages:
-    - shellcheck
-    
+        
 script:
   - shellcheck versions.sh
   - shellcheck php-compiler.sh
