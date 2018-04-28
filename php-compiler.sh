@@ -446,12 +446,12 @@ elaborate_selection() {
     if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
         echo "Compiling an older version in /opt/openssl"
 	
-	cd /tmp
+	cd /tmp || return
 	wget "https://www.openssl.org/source/old/1.0.1/openssl-1.0.1t.tar.gz"
 	tar xzf openssl-1.0.1t.tar.gz 
-	cd openssl-1.0.1t
+	cd openssl-1.0.1t || return
 	./config shared --prefix=/opt/openssl
-	make -j ${CPU_COUNT} && make install
+	make -j "${CPU_COUNT}" && make install
 	ln -s /opt/openssl/lib /opt/openssl/lib/x86_64-linux-gnu
 	wget -O /opt/openssl/ssl/cert.pem "http://curl.haxx.se/ca/cacert.pem"
 	
