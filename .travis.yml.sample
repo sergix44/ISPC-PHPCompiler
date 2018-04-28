@@ -4,8 +4,7 @@ services:
   - docker
 
 env:
-  matrix:
-    &&OS_TO_TEST%%
+  matrix:&&OS_TO_TEST&&
     
 script:
   - shellcheck versions.sh
