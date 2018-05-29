@@ -7,8 +7,8 @@
 declare -A VERSIONS=(
     ["PHP 5.6.36"]="http://php.net/distributions/php-5.6.36.tar.gz"
     ["PHP 7.0.30"]="http://php.net/distributions/php-7.0.30.tar.gz"
-    ["PHP 7.1.18"]="http://php.net/distributions/php-7.1.17.tar.gz"
-    ["PHP 7.2.6"]="http://php.net/distributions/php-7.2.5.tar.gz"
+    ["PHP 7.1.18"]="http://php.net/distributions/php-7.1.18.tar.gz"
+    ["PHP 7.2.6"]="http://php.net/distributions/php-7.2.6.tar.gz"
 )
 
 # All PHP versions checksum
