@@ -5,17 +5,17 @@
 # All PHP versions
 # shellcheck disable=SC2034
 declare -A VERSIONS=(
-    ["PHP 5.6.36"]="http://php.net/distributions/php-5.6.36.tar.gz"
-    ["PHP 7.0.30"]="http://php.net/distributions/php-7.0.30.tar.gz"
-    ["PHP 7.1.19"]="http://php.net/distributions/php-7.1.19.tar.gz"
-    ["PHP 7.2.7"]="http://php.net/distributions/php-7.2.7.tar.gz"
+    ["PHP 5.6.37"]="http://php.net/distributions/php-5.6.37.tar.gz"
+    ["PHP 7.0.31"]="http://php.net/distributions/php-7.0.31.tar.gz"
+    ["PHP 7.1.20"]="http://php.net/distributions/php-7.1.20.tar.gz"
+    ["PHP 7.2.8"]="http://php.net/distributions/php-7.2.8.tar.gz"
 )
 
 # All PHP versions checksum
 # shellcheck disable=SC2034
 declare -A CHECKSUM=(
-    ["PHP 5.6.36"]="06086a8b6a9964ef8009c4d9176b4eeb0c564ea39c1213f015e24f3466d2d69f"
-    ["PHP 7.0.30"]="54e7615205123b940b996300bf99c707c2317b6b78388061a204b23ab3388a26"
-    ["PHP 7.1.19"]="e1ae477b72bed02cdcb04f0157b8f8767bd4f6030416ae06408b4f6d85ee66a1"
-    ["PHP 7.2.7"]="014f0560cfa22e6301b0024a6fd888c3612a0dc102ff355fa2b49544d16d43b1"
+    ["PHP 5.6.37"]="b7ec077f35ef3a8cdd33c29124140b1761111a1429878b4c463bb20d2a31b184"
+    ["PHP 7.0.31"]="182f36e5709837158bd4970ce57fe80735bdf79025133c00d6ad882d1c4d98dd"
+    ["PHP 7.1.20"]="77a2091f4ab50367a6c68274a0d92e0da9ecdbf428b280c9836c5c6d512da450"
+    ["PHP 7.2.8"]="a0cb9bf2f78498fc090eb553df03cdacc198785dec0818efa7a1804c2b7a8722"
 )
