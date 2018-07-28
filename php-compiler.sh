@@ -117,6 +117,7 @@ detect_distro() {
 
     if [ "${DISTRO}" == "" ]; then
         echo "Your distro is not supported"
+	echo "Your distro: ${ID}-${VERSION_ID}"
         echo "You can add it and make a PR ;)"
         exit 404
     fi
