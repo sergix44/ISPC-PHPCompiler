@@ -443,11 +443,16 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}"
 
-    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ] ]; then
+    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
         echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
         exit 0
     fi
 
+    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "devuan2" ]; then
+        echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
+        exit 0
+    fi
+    
     echo -e "Checking compile path..."
     check_folder "${COMPILE_PATH}"
 
