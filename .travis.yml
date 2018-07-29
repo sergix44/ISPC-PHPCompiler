@@ -11,7 +11,6 @@ env:
     - OS=ubuntu DIST=17.10 PHPV="PHP 5.6.37"
     - OS=debian DIST=8 PHPV="PHP 5.6.37"
     - OS="qxip/devuan" DIST="jessie" PHPV="PHP 5.6.37"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 5.6.37"
     
     - OS=centos DIST=7 PHPV="PHP 7.0.31"
     - OS=ubuntu DIST=14.04 PHPV="PHP 7.0.31"
