@@ -13,6 +13,7 @@ wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/ph
 # Currently supported platforms
 Checked entries are also successfully tested.
 - [x] Devuan 1
+- [x] Devuan 2 (ASCII)
 - [x] Debian 8
 - [x] Debian 9
 - [x] CentOS 7
