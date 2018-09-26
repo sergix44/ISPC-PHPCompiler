@@ -5,10 +5,10 @@
 # All PHP versions
 # shellcheck disable=SC2034
 declare -A VERSIONS=(
-    ["PHP 5.6.37"]="http://php.net/distributions/php-5.6.38.tar.gz"
-    ["PHP 7.0.31"]="http://php.net/distributions/php-7.0.32.tar.gz"
-    ["PHP 7.1.20"]="http://php.net/distributions/php-7.1.22.tar.gz"
-    ["PHP 7.2.8"]="http://php.net/distributions/php-7.2.10.tar.gz"
+    ["PHP 5.6.38"]="http://php.net/distributions/php-5.6.38.tar.gz"
+    ["PHP 7.0.32"]="http://php.net/distributions/php-7.0.32.tar.gz"
+    ["PHP 7.1.22"]="http://php.net/distributions/php-7.1.22.tar.gz"
+    ["PHP 7.2.10"]="http://php.net/distributions/php-7.2.10.tar.gz"
 )
 
 # All PHP versions checksum
