@@ -5,4 +5,6 @@ RUN chmod +x /root/php-compiler.sh
 RUN bash /root/php-compiler.sh "&&PHPVL&&"
 
 RUN /etc/init.d/&&PHPVS&&-fpm start
+
+RUN source /etc/profile.d/&&PHPVS&&-alias.sh
 RUN &&PHPVS&& -v
