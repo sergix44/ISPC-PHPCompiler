@@ -6,5 +6,5 @@ RUN bash /root/php-compiler.sh "&&PHPVL&&"
 
 RUN /etc/init.d/&&PHPVS&&-fpm start
 
-RUN source /etc/profile.d/&&PHPVS&&-alias.sh
+RUN bash -c "source /etc/profile.d/&&PHPVS&&-alias.sh"
 RUN &&PHPVS&& -v
