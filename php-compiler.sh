@@ -414,6 +414,13 @@ install() {
     systemctl start "${CURRENT_PHP_NAME}-fpm.service"
 }
 
+check_alias() {
+	if [ ! -f "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh" ]; then
+		touch "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
+		"alias ${CURRENT_PHP_NAME}='${CURRENT_PHP_PATH}" >> "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
+	fi
+}
+
 completed() {
     OUTPUT="${OUTPUT}----------- COMPLETED: [${CURRENT_PHP_NAME}] -----------\\n"
     OUTPUT="${OUTPUT}FastCGI Settings:\\n"
@@ -468,6 +475,7 @@ elaborate_selection() {
         echo -e "Restarting services..."
         systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
     fi
+    check_alias
     completed
     cleanup
     echo -e "${OUTPUT}"
