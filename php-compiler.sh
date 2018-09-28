@@ -343,7 +343,7 @@ compile() {
         webp="--with-webp-dir=/usr"
     fi
 
-    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure \
+    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 -march=native" \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
@@ -416,8 +416,7 @@ install() {
 
 check_alias() {
 	if [ ! -f "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh" ]; then
-		touch "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
-		"alias ${CURRENT_PHP_NAME}='${CURRENT_PHP_PATH}/bin/php" >> "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
+		echo "alias ${CURRENT_PHP_NAME}='${CURRENT_PHP_PATH}/bin/php" > "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
 	fi
 }
 
