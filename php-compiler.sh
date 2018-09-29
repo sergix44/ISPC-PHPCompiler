@@ -417,6 +417,7 @@ install() {
 check_alias() {
 	if [ ! -f "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh" ]; then
 		echo "alias ${CURRENT_PHP_NAME}='${CURRENT_PHP_PATH}/bin/php'" > "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
+		chmod +x "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
 	fi
 }
 
