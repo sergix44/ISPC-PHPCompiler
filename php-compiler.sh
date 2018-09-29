@@ -414,10 +414,9 @@ install() {
     systemctl start "${CURRENT_PHP_NAME}-fpm.service"
 }
 
-check_alias() {
-	if [ ! -f "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh" ]; then
-		echo "alias ${CURRENT_PHP_NAME}='${CURRENT_PHP_PATH}/bin/php'" > "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
-		chmod +x "/etc/profile.d/${CURRENT_PHP_NAME}-alias.sh"
+check_symlink() {
+	if [ ! -f "/usr/bin/${CURRENT_PHP_NAME}" ]; then
+		ln -s ${CURRENT_PHP_PATH}/bin/php /usr/bin/${CURRENT_PHP_NAME}
 	fi
 }
 
@@ -475,7 +474,7 @@ elaborate_selection() {
         echo -e "Restarting services..."
         systemctl restart "${CURRENT_PHP_NAME}-fpm.service"
     fi
-    check_alias
+    check_symlink
     completed
     cleanup
     echo -e "${OUTPUT}"
