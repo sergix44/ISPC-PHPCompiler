@@ -11,7 +11,7 @@ env:
     - OS=ubuntu DIST=17.10 PHPV="PHP 5.6.38"
     - OS=debian DIST=8 PHPV="PHP 5.6.38"
     - OS="qxip/devuan" DIST="jessie" PHPV="PHP 5.6.38"
-    
+
     - OS=centos DIST=7 PHPV="PHP 7.0.32"
     - OS=ubuntu DIST=14.04 PHPV="PHP 7.0.32"
     - OS=ubuntu DIST=16.04 PHPV="PHP 7.0.32"
@@ -21,23 +21,24 @@ env:
     - OS="qxip/devuan" DIST="jessie" PHPV="PHP 7.0.32"
     - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.0.32"
 
-    - OS=centos DIST=7 PHPV="PHP 7.1.22"
-    - OS=ubuntu DIST=14.04 PHPV="PHP 7.1.22"
-    - OS=ubuntu DIST=16.04 PHPV="PHP 7.1.22"
-    - OS=ubuntu DIST=17.10 PHPV="PHP 7.1.22"
-    - OS=debian DIST=8 PHPV="PHP 7.1.22"
-    - OS=debian DIST=9 PHPV="PHP 7.1.22"
-    - OS="qxip/devuan" DIST="jessie" PHPV="PHP 7.1.22"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.1.22"
-    
-    - OS=centos DIST=7 PHPV="PHP 7.2.10"
-    - OS=ubuntu DIST=14.04 PHPV="PHP 7.2.10"
-    - OS=ubuntu DIST=16.04 PHPV="PHP 7.2.10"
-    - OS=ubuntu DIST=17.10 PHPV="PHP 7.2.10"
-    - OS=debian DIST=8 PHPV="PHP 7.2.10"
-    - OS=debian DIST=9 PHPV="PHP 7.2.10"
-    - OS="qxip/devuan" DIST="jessie" PHPV="PHP 7.2.10"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.2.10"
+    - OS=centos DIST=7 PHPV="PHP 7.1.23"
+    - OS=ubuntu DIST=14.04 PHPV="PHP 7.1.23"
+    - OS=ubuntu DIST=16.04 PHPV="PHP 7.1.23"
+    - OS=ubuntu DIST=17.10 PHPV="PHP 7.1.23"
+    - OS=debian DIST=8 PHPV="PHP 7.1.23"
+    - OS=debian DIST=9 PHPV="PHP 7.1.23"
+    - OS="qxip/devuan" DIST="jessie" PHPV="PHP 7.1.23"
+    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.1.23"
+
+    - OS=centos DIST=7 PHPV="PHP 7.2.11"
+    - OS=ubuntu DIST=14.04 PHPV="PHP 7.2.11"
+    - OS=ubuntu DIST=16.04 PHPV="PHP 7.2.11"
+    - OS=ubuntu DIST=17.10 PHPV="PHP 7.2.11"
+    - OS=debian DIST=8 PHPV="PHP 7.2.11"
+    - OS=debian DIST=9 PHPV="PHP 7.2.11"
+    - OS="qxip/devuan" DIST="jessie" PHPV="PHP 7.2.11"
+    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.2.11"
+
 
 script:
   - shellcheck versions.sh

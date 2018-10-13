@@ -7,8 +7,8 @@
 declare -A VERSIONS=(
     ["PHP 5.6.38"]="http://php.net/distributions/php-5.6.38.tar.gz"
     ["PHP 7.0.32"]="http://php.net/distributions/php-7.0.32.tar.gz"
-    ["PHP 7.1.22"]="http://php.net/distributions/php-7.1.22.tar.gz"
-    ["PHP 7.2.10"]="http://php.net/distributions/php-7.2.10.tar.gz"
+    ["PHP 7.1.23"]="http://php.net/distributions/php-7.1.23.tar.gz"
+    ["PHP 7.2.11"]="http://php.net/distributions/php-7.2.11.tar.gz"
 )
 
 # All PHP versions checksum
@@ -16,6 +16,6 @@ declare -A VERSIONS=(
 declare -A CHECKSUM=(
     ["PHP 5.6.38"]="3b74d46cd79a45cce90c8059e09d8bd0beeb5de562cbb0cb42f96ff8fa665fd4"
     ["PHP 7.0.32"]="08d13389f611ec55f3b9164347a97e410099238a3dd85946e556a288ce366fbe"
-    ["PHP 7.1.22"]="1d275115593a33315647094a5a4ee9bd73c7960c08686cee35dc2e683a68b157"
-    ["PHP 7.2.10"]="d2d908b49b6005e65dcc46cdc986603a19b7ff103119fce8ddd4648586d430a4"
+    ["PHP 7.1.23"]="b839a4de32e6770d10b87c2495c070d09277fe61008804b2992466f0dcc5f0fa"
+    ["PHP 7.2.11"]="180c63a9647c0a50d438b6bd5c7a8e7a11bceee8ad613a59d3ef15151fc158d4"
 )
