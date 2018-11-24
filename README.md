@@ -25,7 +25,7 @@ Checked entries are also successfully tested.
 The script should also work on:
  - Ubuntu 17.04
 
-But this platform are no longer tested.
+But these platforms are no longer tested.
 
 # Contributors
 [<img src="https://www.gravatar.com/avatar/98b8d56f4a193e3f7154f236c16930b2?s=100" alt="" height="100">](https://github.com/SergiX44) | [<img src="https://www.gravatar.com/avatar/35923b3b04e23bef801553656b606bfag?s=100" alt="" height="100">](https://github.com/Pe46dro)
