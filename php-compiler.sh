@@ -489,7 +489,7 @@ install_dependencies
 if [ -f /.dockerenv ]; then
 	source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 else
-	source ./versions.sh
+	source /root/versions.sh
 fi
 
 check_return_code
