@@ -486,7 +486,12 @@ install_utils
 install_dependencies
 
 # shellcheck disable=SC1090
-source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
+if [ -f /.dockerenv ]; then
+	source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
+else
+	source ./versions.sh
+fi
+
 check_return_code
 
 if [ -f /.dockerenv ]; then
