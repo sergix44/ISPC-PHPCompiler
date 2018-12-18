@@ -485,10 +485,11 @@ detect_distro
 install_utils
 install_dependencies
 
-# shellcheck disable=SC1090
 if [ -f /.dockerenv ]; then
+	# shellcheck disable=SC1090
 	source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 else
+	# shellcheck source=/root/versions.sh
 	source /root/versions.sh
 fi
 
