@@ -40,6 +40,11 @@ check_folder() {
 }
 
 download_extract() {
+
+    if [ -f /.dockerenv ]; then
+        echo ${1}
+    fi
+
     ARCHIVE_NAME=${1##*/}
     FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
 
@@ -489,7 +494,7 @@ if [ -f /.dockerenv ]; then
 	# shellcheck disable=SC1090
 	source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 else
-	# shellcheck source=/root/versions.sh
+	# shellcheck source=./versions.sh
 	source /root/versions.sh
 fi
 
