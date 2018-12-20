@@ -42,7 +42,7 @@ check_folder() {
 download_extract() {
 
     if [ -f /.dockerenv ]; then
-        echo ${1}
+        echo "${1}"
     fi
 
     ARCHIVE_NAME=${1##*/}
@@ -491,11 +491,12 @@ install_utils
 install_dependencies
 
 if [ -f /.dockerenv ]; then
-	# shellcheck disable=SC1090
-	source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
-else
 	# shellcheck source=./versions.sh
 	source /root/versions.sh
+
+else
+	# shellcheck disable=SC1090
+	source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
 fi
 
 check_return_code
