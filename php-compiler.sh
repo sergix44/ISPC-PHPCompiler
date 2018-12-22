@@ -332,8 +332,7 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 
 compile() {
 
-	ADDITIONAL_CFLAGS=""
-
+	ADDITIONAL_CFLAGS="-march=native -mtune=native"
 	libdir="--with-libdir=/lib/x86_64-linux-gnu"
 	webp="--with-webp-dir=/usr"
 	zip="--enable-zip"
@@ -343,11 +342,13 @@ compile() {
 
         if [ "${CURRENT_PHP_NAME}" == "php73" ]; then
 	        zip="--enable-zip --without-libzip"
+	        ADDITIONAL_CFLAGS=""
         fi
     fi
 
     if [ "${DISTRO}" == "ubuntu-14.04" ] && [ "${CURRENT_PHP_NAME}" == "php73" ]; then
         zip="--enable-zip --without-libzip"
+        ADDITIONAL_CFLAGS=""
     fi
 
     if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
@@ -355,7 +356,7 @@ compile() {
     fi
 
     # shellcheck disable=SC2086
-    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="${ADDITIONAL_CFLAGS}" \
+    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 ${ADDITIONAL_CFLAGS}" \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
