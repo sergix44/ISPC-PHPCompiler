@@ -15,7 +15,7 @@ check_return_code() {
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
        rm -r "${COMPILE_PATH:?}/php*" 2&> /dev/null
-       exit 500
+       exit 1
     fi
 }
 
@@ -41,10 +41,6 @@ check_folder() {
 
 download_extract() {
 
-    if [ -f /.dockerenv ]; then
-        echo "${1}"
-    fi
-
     ARCHIVE_NAME=${1##*/}
     FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
 
@@ -55,7 +51,7 @@ download_extract() {
     if [ "$(sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
         echo -e "Checksum mismatch, try to run the script again"
         sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}"; echo
-        exit 409
+        exit 126
     else
         echo -e "Checksum matched!"
     fi
@@ -121,7 +117,7 @@ detect_distro() {
         echo "Your distro is not supported"
 	echo "Your distro: ${ID}-${VERSION_ID}"
         echo "You can add it and make a PR ;)"
-        exit 404
+        exit 127
     fi
 
 }
@@ -363,10 +359,10 @@ compile() {
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
-        ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
+        "${zip}" --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
-        --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
-        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
+        --with-fpm-group=www-data "${libdir}" --enable-ftp --with-imap --with-imap-ssl \
+        --with-kerberos --with-gettext --with-xmlrpc "${webp}" --with-xsl \
         --enable-opcache --enable-intl --enable-fpm)
     check_return_code
 
@@ -500,7 +496,7 @@ install_utils
 install_dependencies
 
 if [ -f /.dockerenv ]; then
-    # shellcheck source=./versions.sh
+    # shellcheck disable=SC1091
     source /root/versions.sh
 
 else
