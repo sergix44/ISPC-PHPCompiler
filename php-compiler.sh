@@ -342,13 +342,11 @@ compile() {
         libdir="--with-libdir=lib64"
 
         if [ "${CURRENT_PHP_NAME}" == "php73" ]; then
-	        ADDITIONAL_CFLAGS="-mavx"
 	        zip="--enable-zip --without-libzip"
         fi
     fi
 
     if [ "${DISTRO}" == "ubuntu-14.04" ] && [ "${CURRENT_PHP_NAME}" == "php73" ]; then
-        ADDITIONAL_CFLAGS="-mavx"
         zip="--enable-zip --without-libzip"
     fi
 
@@ -357,7 +355,7 @@ compile() {
     fi
 
     # shellcheck disable=SC2086
-    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 -march=native ${ADDITIONAL_CFLAGS}" \
+    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="${ADDITIONAL_CFLAGS}" \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
