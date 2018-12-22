@@ -496,7 +496,7 @@ install_utils
 install_dependencies
 
 if [ -f /.dockerenv ]; then
-    # shellcheck disable=SC1091
+    # shellcheck source=./versions.sh
     source /root/versions.sh
 
 else
