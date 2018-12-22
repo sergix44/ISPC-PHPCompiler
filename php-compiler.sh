@@ -339,12 +339,15 @@ compile() {
 	zip="--enable-zip"
 
     if [ "${DISTRO}" == "centos7" ]; then
-        ADDITIONAL_CFLAGS="-mavx"
         libdir="--with-libdir=lib64"
-        zip="--enable-zip --without-libzip"
+
+        if [ "${CURRENT_PHP_NAME}" == "php73" ]; then
+	        ADDITIONAL_CFLAGS="-mavx"
+	        zip="--enable-zip --without-libzip"
+        fi
     fi
 
-    if [ "${DISTRO}" == "ubuntu-14.04" ]; then
+    if [ "${DISTRO}" == "ubuntu-14.04" ] && [ "${CURRENT_PHP_NAME}" == "php73" ]; then
         ADDITIONAL_CFLAGS="-mavx"
         zip="--enable-zip --without-libzip"
     fi
