@@ -353,16 +353,17 @@ compile() {
         webp="--with-vpx-dir=/usr"
     fi
 
-    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 -march=native ${ADDITIONAL_CFLAGS}" \
+    # shellcheck disable=SC2086
+    $(cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 -march=native ${ADDITIONAL_CFLAGS}" \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
-        "${zip}" --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
+        ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
-        --with-fpm-group=www-data "${libdir}" --enable-ftp --with-imap --with-imap-ssl \
-        --with-kerberos --with-gettext --with-xmlrpc "${webp}" --with-xsl \
+        --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
+        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm)
     check_return_code
 
