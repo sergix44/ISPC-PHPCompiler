@@ -15,7 +15,7 @@ check_return_code() {
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
        rm -r "${COMPILE_PATH:?}/php*" 2&> /dev/null
-       exit 500
+       exit 1
     fi
 }
 
@@ -40,6 +40,7 @@ check_folder() {
 }
 
 download_extract() {
+
     ARCHIVE_NAME=${1##*/}
     FOLDER_NAME=${ARCHIVE_NAME/.tar.gz/}
 
@@ -50,7 +51,7 @@ download_extract() {
     if [ "$(sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}" | cut -d' ' -f1)" != "${2}" ]; then
         echo -e "Checksum mismatch, try to run the script again"
         sha256sum "${COMPILE_PATH}/${ARCHIVE_NAME}"; echo
-        exit 409
+        exit 126
     else
         echo -e "Checksum matched!"
     fi
@@ -79,7 +80,7 @@ detect_distro() {
     if echo "${ID}-${VERSION_ID}" | grep -iq "devuan-1"; then
         DISTRO=devuan1
     fi
-    
+
     if echo "${PRETTY_NAME}" | grep -iq "Devuan GNU/Linux ascii"; then
         DISTRO=devuan2
     fi
@@ -116,59 +117,59 @@ detect_distro() {
         echo "Your distro is not supported"
 	echo "Your distro: ${ID}-${VERSION_ID}"
         echo "You can add it and make a PR ;)"
-        exit 404
+        exit 127
     fi
 
 }
 
 install_dependencies() {
     if [ "${DISTRO}" == "devuan1" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev
         check_return_code
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
-  
+
     if [ "${DISTRO}" == "devuan2" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
-        
+
     if [ "${DISTRO}" == "debian8" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev
         check_return_code
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian9" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-14.04" ]; then
-        apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev
+        apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev
         check_return_code
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-16.04" ]; then
-        apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev
+        apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev
         check_return_code
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-17.04" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "ubuntu-17.10" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
@@ -178,7 +179,7 @@ install_dependencies() {
         yum -y install epel-release
         check_return_code
         yum check-update
-        yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel yum install libicu-devel gcc-c++
+        yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel
         check_return_code
     fi
 }
@@ -331,25 +332,42 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 
 compile() {
 
+	ADDITIONAL_CFLAGS="-march=native -mtune=native"
+	libdir="--with-libdir=/lib/x86_64-linux-gnu"
+	webp="--with-webp-dir=/usr"
+	zip="--enable-zip --with-libzip"
+
     if [ "${DISTRO}" == "centos7" ]; then
         libdir="--with-libdir=lib64"
-    else
-        libdir="--with-libdir=/lib/x86_64-linux-gnu"
+		zip="--enable-zip"
+
+        if [ "${CURRENT_PHP_NAME}" == "php73" ]; then
+	        zip="--enable-zip --without-libzip"
+	        ADDITIONAL_CFLAGS=""
+        fi
+    fi
+
+    if [ "${DISTRO}" == "ubuntu-14.04" ]; then
+        zip="--enable-zip"
+
+        if [ "${CURRENT_PHP_NAME}" == "php73" ]; then
+            zip="--enable-zip --without-libzip"
+            ADDITIONAL_CFLAGS=""
+        fi
     fi
 
     if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
         webp="--with-vpx-dir=/usr"
-    else
-        webp="--with-webp-dir=/usr"
     fi
 
-    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 -march=native" \
+    # shellcheck disable=SC2086
+    (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 ${ADDITIONAL_CFLAGS}" \
         --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
-        --enable-zip --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
+        ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
@@ -449,16 +467,11 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}"
 
-    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "debian9" ]; then
+    if { [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
         exit 0
     fi
 
-    if [ "${CURRENT_PHP_NAME}" == "php56" ] && [ "${DISTRO}" == "devuan2" ]; then
-        echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
-        exit 0
-    fi
-    
     echo -e "Checking compile path..."
     check_folder "${COMPILE_PATH}"
 
@@ -485,8 +498,15 @@ detect_distro
 install_utils
 install_dependencies
 
-# shellcheck disable=SC1090
-source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
+if [ -f /.dockerenv ]; then
+    # shellcheck source=./versions.sh
+    source /root/versions.sh
+
+else
+    # shellcheck disable=SC1090
+    source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
+fi
+
 check_return_code
 
 if [ -f /.dockerenv ]; then
