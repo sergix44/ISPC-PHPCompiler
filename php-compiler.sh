@@ -335,7 +335,7 @@ compile() {
 	ADDITIONAL_CFLAGS="-march=native -mtune=native"
 	libdir="--with-libdir=/lib/x86_64-linux-gnu"
 	webp="--with-webp-dir=/usr"
-	zip="--enable-zip --with-libzip"
+	zip="--enable-zip --with-libzip=/usr"
 
     if [ "${DISTRO}" == "centos7" ]; then
         libdir="--with-libdir=lib64"
