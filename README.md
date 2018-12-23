@@ -8,7 +8,7 @@ At every launch a new version of the `versions.sh` file is imported from this re
 # How to use
 Just run this command in your shell to download and run the script, and then just follow the instruction on your screen:
 ```bash
-wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/php-compiler.sh; bash php-compiler.sh
+wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/php-compiler.sh; chmod +x php-compiler.sh; bash php-compiler.sh
 ```
 # Currently supported platforms
 Checked entries are also successfully tested.
