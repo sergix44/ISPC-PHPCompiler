@@ -5,19 +5,19 @@
 # All PHP versions
 # shellcheck disable=SC2034
 declare -A VERSIONS=(
-    ["PHP 5.6.39"]="http://php.net/distributions/php-5.6.39.tar.gz"
-    ["PHP 7.0.32"]="http://php.net/distributions/php-7.0.32.tar.gz"
-    ["PHP 7.1.25"]="http://php.net/distributions/php-7.1.25.tar.gz"
-    ["PHP 7.2.13"]="http://php.net/distributions/php-7.2.13.tar.gz"
-    ["PHP 7.3.0"]="http://php.net/distributions/php-7.3.0.tar.gz"
+    ["PHP 5.6.40"]="http://php.net/distributions/php-5.6.40.tar.gz"
+    ["PHP 7.0.33"]="http://php.net/distributions/php-7.0.33.tar.gz"
+    ["PHP 7.1.26"]="http://php.net/distributions/php-7.1.26.tar.gz"
+    ["PHP 7.2.14"]="http://php.net/distributions/php-7.2.14.tar.gz"
+    ["PHP 7.3.1"]="http://php.net/distributions/php-7.3.1.tar.gz"
 )
 
 # All PHP versions checksum
 # shellcheck disable=SC2034
 declare -A CHECKSUM=(
-    ["PHP 5.6.39"]="127b122b7d6c7f3c211c0ffa554979370c3131196137404a51a391d8e2e9c7bb"
-    ["PHP 7.0.32"]="08d13389f611ec55f3b9164347a97e410099238a3dd85946e556a288ce366fbe"
-    ["PHP 7.1.25"]="7dc40e202140e8b4fb3d992c15a68d98dc06b805e6b218497d260abbe51f5958"
-    ["PHP 7.2.13"]="e563cee406b1ec96649c22ed2b35796cfe4e9aa9afa6eab6be4cf2fe5d724744"
-    ["PHP 7.3.0"]="391bd0f91d9bdd01ab47ef9607bad8c65e35bc9bb098fb7777b2556e2c847b11"
+    ["PHP 5.6.40"]="56fb9878d12fdd921f6a0897e919f4e980d930160e154cbde2cc6d9206a27cac"
+    ["PHP 7.0.33"]="d71a6ecb6b13dc53fed7532a7f8f949c4044806f067502f8fb6f9facbb40452a"
+    ["PHP 7.1.26"]="069315d3c3f964fd165bbbb3c2fc56005813e2cf97bed05055318dcc4e775328"
+    ["PHP 7.2.14"]="87e13d80b0c3a66bd463d1cb47dc101335884a0d192ab924f547f8aed7f70c08"
+    ["PHP 7.3.1"]="8006211f7a041dde22fffedc416d142e0ebf22066014077ca936d7e6f655ead5"
 )
