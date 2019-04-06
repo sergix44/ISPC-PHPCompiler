@@ -109,6 +109,10 @@ detect_distro() {
         DISTRO=ubuntu-17.10
     fi
 
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-18.04"; then
+        DISTRO=ubuntu-18.04
+    fi
+
     if echo "${ID}-${VERSION_ID}" | grep -iq "centos-7"; then
         DISTRO=centos7
     fi
