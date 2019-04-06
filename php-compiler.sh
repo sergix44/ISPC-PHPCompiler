@@ -478,7 +478,7 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}"
 
-    if { [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
+    if { [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
         exit 0
     fi
