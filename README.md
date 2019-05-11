@@ -18,13 +18,13 @@ Checked entries are also successfully tested.
 - [x] Debian 9
 - [x] CentOS 7
 - [x] Ubuntu 16.04
-- [x] Ubuntu 17.10
 - [x] Ubuntu 18.04
 
 # EOL
 The script should also work on:
  - Ubuntu 14.04
  - Ubuntu 17.04
+ - Ubuntu 17.10
 
 But these platforms are no longer tested.
 
