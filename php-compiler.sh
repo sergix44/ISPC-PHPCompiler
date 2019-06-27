@@ -26,7 +26,7 @@ install_utils() {
         yum -y install whiptail curl wget
     else
         apt-get update && apt-get -y upgrade
-        apt-get -y install whiptail curl wget
+        apt-get -y install whiptail curl wget insserv
     fi
     check_return_code
 }
