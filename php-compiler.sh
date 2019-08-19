@@ -446,6 +446,7 @@ install() {
 check_symlink() {
 	if [ ! -f "/usr/bin/${CURRENT_PHP_NAME}" ]; then
 		ln -s ${CURRENT_PHP_PATH}/bin/php /usr/bin/${CURRENT_PHP_NAME}
+		update-alternatives --install /usr/bin/${CURRENT_PHP_NAME} php /opt/${CURRENT_PHP_NAME}/bin/php ${CURRENT_PHP_VERSION}
 	fi
 }
 
