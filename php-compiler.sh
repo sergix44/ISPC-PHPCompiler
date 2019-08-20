@@ -153,6 +153,13 @@ install_dependencies() {
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
+    if [ "${DISTRO}" == "debian10" ]; then
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv
+        check_return_code
+        ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
+    fi
+
     if [ "${DISTRO}" == "ubuntu-14.04" ]; then
         apt-get -y install build-essential nano wget libjpeg62-dbg libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev
         check_return_code
@@ -446,7 +453,7 @@ install() {
 check_symlink() {
 	if [ ! -f "/usr/bin/${CURRENT_PHP_NAME}" ]; then
 		ln -s ${CURRENT_PHP_PATH}/bin/php /usr/bin/${CURRENT_PHP_NAME}
-		update-alternatives --install /usr/bin/php php /opt/${CURRENT_PHP_NAME}/bin/php ${CURRENT_PHP_VERSION}
+		update-alternatives --install /usr/bin/php php /opt/${CURRENT_PHP_NAME}/bin/php "${CURRENT_PHP_VERSION}"
 	fi
 }
 
