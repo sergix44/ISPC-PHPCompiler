@@ -93,6 +93,10 @@ detect_distro() {
         DISTRO=debian9
     fi
 
+    if echo "${ID}-${VERSION_ID}" | grep -iq "debian-10"; then
+        DISTRO=debian10
+    fi
+
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-14.04"; then
         DISTRO=ubuntu-14.04
     fi
