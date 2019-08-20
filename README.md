@@ -16,6 +16,7 @@ Checked entries are also successfully tested.
 - [x] Devuan 2 (ASCII)
 - [x] Debian 8
 - [x] Debian 9
+- [x] Debian 10
 - [x] CentOS 7
 - [x] Ubuntu 16.04
 - [x] Ubuntu 18.04
