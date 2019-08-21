@@ -354,6 +354,9 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 
 compile() {
 
+    pkg-config freetype2 --libs
+    pkg-config freetype2 --cflags
+
 	ADDITIONAL_CFLAGS="-march=native -mtune=native"
 	libdir="--with-libdir=/lib/x86_64-linux-gnu"
 	webp="--with-webp-dir=/usr"
