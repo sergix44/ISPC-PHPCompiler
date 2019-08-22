@@ -357,10 +357,10 @@ compile() {
     pkg-config freetype2 --libs
     pkg-config freetype2 --cflags
 
-	ADDITIONAL_CFLAGS="-march=native -mtune=native"
-	libdir="--with-libdir=/lib/x86_64-linux-gnu"
-	webp="--with-webp-dir=/usr"
-	zip="--enable-zip --with-libzip"
+    ADDITIONAL_CFLAGS="-march=native -mtune=native"
+    libdir="--with-libdir=/lib/x86_64-linux-gnu"
+    webp="--with-webp-dir=/usr"
+    zip="--enable-zip --with-libzip"
 
     if [ "${DISTRO}" == "centos7" ]; then
         libdir="--with-libdir=lib64"
@@ -384,6 +384,11 @@ compile() {
     if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
         webp="--with-vpx-dir=/usr"
     fi
+    
+    xmp=""
+    if [ "${DISTRO}" == "debian10" ]; then
+    	xmp="--with-xpm-dir=/usr"
+    fi
 
     # shellcheck disable=SC2086
     (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 ${ADDITIONAL_CFLAGS}" \
@@ -395,7 +400,7 @@ compile() {
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
-        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl --with-xpm-dir=/usr \
+        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl ${xmp} \
         --enable-opcache --enable-intl --enable-fpm)
     check_return_code
 
