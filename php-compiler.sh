@@ -395,7 +395,7 @@ compile() {
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
-        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
+        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl --with-xpm-dir=/usr \
         --enable-opcache --enable-intl --enable-fpm)
     check_return_code
 
