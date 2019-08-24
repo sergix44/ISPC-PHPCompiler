@@ -572,9 +572,9 @@ install_utils
 install_dependencies
 
 if [ -f ./versions.sh ]; then
+    echo "Using local versions.sh"
     # shellcheck source=./versions.sh
     source ./versions.sh
-
 else
     # shellcheck disable=SC1090
     source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
