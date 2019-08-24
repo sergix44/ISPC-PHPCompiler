@@ -12,7 +12,7 @@ OUTPUT=""
 #-- Helpers Functions
 
 check_return_code() {
-	# shellcheck disable=SC2181
+        # shellcheck disable=SC2181
     if [ $? -ne 0 ]; then
        echo "Error detected in latest command, exiting..."
        rm -r "${COMPILE_PATH:?}/php*" 2&> /dev/null
@@ -57,7 +57,7 @@ download_extract() {
         echo -e "Checksum matched!"
     fi
 
-	echo -e "Extracting ${ARCHIVE_NAME}..."
+        echo -e "Extracting ${ARCHIVE_NAME}..."
     tar zxf "${COMPILE_PATH}/${ARCHIVE_NAME}" -C "${COMPILE_PATH}"
     check_return_code
 }
@@ -124,7 +124,7 @@ detect_distro() {
 
     if [ "${DISTRO}" == "" ]; then
         echo "Your distro is not supported"
-	echo "Your distro: ${ID}-${VERSION_ID}"
+        echo "Your distro: ${ID}-${VERSION_ID}"
         echo "You can add it and make a PR ;)"
         exit 127
     fi
@@ -354,25 +354,27 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 }
 
 compile_freetype() {
-    wget "https://downloads.sourceforge.net/freetype/freetype-2.10.1.tar.xz" -O "/tmp/freetype.tar.xz"
+    version="2.10.1"
+
+    wget "https://downloads.sourceforge.net/freetype/freetype-${version}.tar.xz" -O "/tmp/freetype.tar.xz"
     check_return_code
-    
-    tar -xf "/tmp/freetype.tar.xz" -C "/tmp/freetype-src/"
+
+    tar -xf "/tmp/freetype.tar.xz" -C "/tmp/"
     check_return_code
-    
-    (cd "/tmp/freetype-src/" && sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg)
+
+    (cd "/tmp/freetype-${version}/" && sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg)
     check_return_code
-    
-    (cd "/tmp/freetype-src/" && sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" -i include/freetype/config/ftoption.h)
+
+    (cd "/tmp/freetype-${version}/" && sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" -i include/freetype/config/ftoption.h)
     check_return_code
-    
-    (cd "/tmp/freetype-src/" && ./configure --prefix=/tmp/freetype2/ --enable-freetype-config --disable-static)
+
+    (cd "/tmp/freetype-${version}/" && ./configure --prefix=/tmp/freetype2/ --enable-freetype-config --disable-static)
     check_return_code
-    
-    make -C "/tmp/freetype-src/" -j"${CPU_COUNT}"
+
+    make -C "/tmp/freetype-${version}/" -j"${CPU_COUNT}"
     check_return_code
-    
-    make -C "/tmp/freetype-src/" install
+
+    make -C "/tmp/freetype-${version}/" install
     check_return_code
 }
 
@@ -384,11 +386,11 @@ compile() {
 
     if [ "${DISTRO}" == "centos7" ]; then
         libdir="--with-libdir=lib64"
-		zip="--enable-zip"
+                zip="--enable-zip"
 
         if [ "${CURRENT_PHP_NAME}" == "php73" ]; then
-	        zip="--enable-zip --without-libzip"
-	        ADDITIONAL_CFLAGS=""
+                zip="--enable-zip --without-libzip"
+                ADDITIONAL_CFLAGS=""
         fi
     fi
 
@@ -404,11 +406,11 @@ compile() {
     if [ "${CURRENT_PHP_VERSION}" -lt 70 ]; then
         webp="--with-vpx-dir=/usr"
     fi
-    
+
     freetype="--with-freetype-dir"
     if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
-    	compile_freetype
-	    freetype="--with-freetype-dir=/tmp/freetype2"
+        compile_freetype
+            freetype="--with-freetype-dir=/tmp/freetype2"
     fi
 
     # shellcheck disable=SC2086
@@ -484,10 +486,10 @@ install() {
 }
 
 check_symlink() {
-	if [ ! -f "/usr/bin/${CURRENT_PHP_NAME}" ]; then
-		ln -s ${CURRENT_PHP_PATH}/bin/php /usr/bin/${CURRENT_PHP_NAME}
-		update-alternatives --install /usr/bin/php php /opt/${CURRENT_PHP_NAME}/bin/php "${CURRENT_PHP_VERSION}"
-	fi
+        if [ ! -f "/usr/bin/${CURRENT_PHP_NAME}" ]; then
+                ln -s ${CURRENT_PHP_PATH}/bin/php /usr/bin/${CURRENT_PHP_NAME}
+                update-alternatives --install /usr/bin/php php /opt/${CURRENT_PHP_NAME}/bin/php "${CURRENT_PHP_VERSION}"
+        fi
 }
 
 completed() {
@@ -505,9 +507,9 @@ completed() {
 cleanup() {
     rm -r "${COMPILE_PATH:?}/${FOLDER_NAME}"
     rm -r "${COMPILE_PATH:?}/${ARCHIVE_NAME}"
-    
+
     if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
-        rm -r "/tmp/freetype-src/"
+        rm -r /tmp/freetype-*/
         rm -r "/tmp/freetype.tar.xz"
         rm -r "/tmp/freetype2/"
     fi
@@ -515,16 +517,16 @@ cleanup() {
 
 elaborate_selection() {
 
-	if [ "${USER_SELECTION}" == "" ]; then
-		echo -e "Installation aborted."
-		exit
-	fi
+        if [ "${USER_SELECTION}" == "" ]; then
+                echo -e "Installation aborted."
+                exit
+        fi
 
     escaped_selection="${USER_SELECTION//\"/}"
     CURRENT_PHP_NAME="php${escaped_selection:4:1}${escaped_selection:6:1}"
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
-    
+
     if { [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
         exit 0
