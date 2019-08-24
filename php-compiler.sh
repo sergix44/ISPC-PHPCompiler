@@ -535,10 +535,15 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
 
-    if { [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
-        echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
+    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
+        echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 0
     fi
+
+    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
+        echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
+        exit 0
+    fi       
 
     echo -e "Checking compile path..."
     check_folder "${COMPILE_PATH}"
