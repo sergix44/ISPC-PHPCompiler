@@ -385,12 +385,12 @@ compile() {
     zip="--enable-zip --with-libzip"
     freetype="--with-freetype-dir"
     gd="--with-gd"
-    
+
     if [ "${DISTRO}" == "centos7" ]; then
         libdir="--with-libdir=lib64"
         zip="--enable-zip"
 
-        if [ "${CURRENT_PHP_VERSION}" -eq 73 ]; then
+        if [ "${CURRENT_PHP_VERSION}" -gt 72 ]; then
                 zip="--enable-zip --without-libzip"
                 ADDITIONAL_CFLAGS=""
         fi
@@ -409,13 +409,13 @@ compile() {
         webp="--with-vpx-dir=/usr"
     fi
 
-    
+
     if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         compile_freetype
-        freetype="--with-freetype-dir=/tmp/freetype2"        
+        freetype="--with-freetype-dir=/tmp/freetype2"
     fi
-    
-    
+
+
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
         gd="--enable-gd"
         freetype="--with-freetype"
