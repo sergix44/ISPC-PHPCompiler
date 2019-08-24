@@ -132,33 +132,33 @@ detect_distro() {
 
 install_dependencies() {
     if [ "${DISTRO}" == "devuan1" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev pkg-config libsqlite3-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev pkg-config
         check_return_code
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "devuan2" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config libsqlite3-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian8" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev pkg-config libsqlite3-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libjpeg62-turbo-dbg libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libpng12-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libicu-dev libzip-dev pkg-config
         check_return_code
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian9" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config libsqlite3-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian10" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config libxpm-dev libsqlite3-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
@@ -352,11 +352,30 @@ sed -i "s:&NAME&:${1}:g" "/lib/systemd/system/${1}-fpm.service"
 sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 }
 
+compile_freetype() {
+    wget "https://downloads.sourceforge.net/freetype/freetype-2.10.1.tar.xz" -O "/tmp/freetype.tar.xz"
+    check_return_code
+    
+    tar -xf "/tmp/freetype.tar.xz" -C "/tmp/freetype-src/"
+    check_return_code
+    
+    (cd "/tmp/freetype-src/" && sed -ri "s:.*(AUX_MODULES.*valid):\1:" modules.cfg)
+    check_return_code
+    
+    (cd "/tmp/freetype-src/" && sed -r "s:.*(#.*SUBPIXEL_RENDERING) .*:\1:" -i include/freetype/config/ftoption.h)
+    check_return_code
+    
+    (cd "/tmp/freetype-src/" && ./configure --prefix=/tmp/freetype2/ --enable-freetype-config --disable-static)
+    check_return_code
+    
+    make -C "/tmp/freetype-src/" -j"${CPU_COUNT}"
+    check_return_code
+    
+    make -C "/tmp/freetype-src/" install
+    check_return_code
+}
+
 compile() {
-
-    pkg-config freetype2 --libs
-    pkg-config freetype2 --cflags
-
     ADDITIONAL_CFLAGS="-march=native -mtune=native"
     libdir="--with-libdir=/lib/x86_64-linux-gnu"
     webp="--with-webp-dir=/usr"
@@ -381,18 +400,19 @@ compile() {
         fi
     fi
 
-    if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
+    if [ "${CURRENT_PHP_VERSION}" -lt 70 ]; then
         webp="--with-vpx-dir=/usr"
     fi
     
-    xmp=""
-    if [ "${DISTRO}" == "debian10" ]; then
-    	xmp="--with-xpm-dir=/usr"
+    freetype="--with-freetype-dir"
+    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    	compile_freetype
+	    freetype="--with-freetype-dir=/tmp/freetype2"
     fi
 
     # shellcheck disable=SC2086
     (cd "${COMPILE_PATH}/${FOLDER_NAME}" && ./configure CFLAGS="-O3 ${ADDITIONAL_CFLAGS}" \
-        --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir --with-freetype-dir --enable-mbstring \
+        --prefix=${CURRENT_PHP_PATH} --with-pdo-pgsql --with-zlib-dir ${freetype} --enable-mbstring \
         --with-libxml-dir=/usr --enable-soap --enable-calendar --with-curl --with-mcrypt \
         --with-zlib --with-gd --with-pgsql --disable-rpath --enable-inline-optimization \
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
@@ -400,7 +420,7 @@ compile() {
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         --with-jpeg-dir=/usr --with-png-dir=/usr --enable-gd-native-ttf --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
-        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl ${xmp} \
+        --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm)
     check_return_code
 
@@ -439,7 +459,7 @@ install() {
 
     sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
 
-    if [ "${CURRENT_PHP_VERSION}" -lt 7 ]; then
+    if [ "${CURRENT_PHP_VERSION}" -lt 70 ]; then
         sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
         echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
         check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
@@ -484,6 +504,12 @@ completed() {
 cleanup() {
     rm -r "${COMPILE_PATH:?}/${FOLDER_NAME}"
     rm -r "${COMPILE_PATH:?}/${ARCHIVE_NAME}"
+    
+    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+        rm -r "/tmp/freetype-src/"
+        rm -r "/tmp/freetype.tar.xz"
+        rm -r "/tmp/freetype2/"
+    fi
 }
 
 elaborate_selection() {
@@ -496,8 +522,8 @@ elaborate_selection() {
     escaped_selection="${USER_SELECTION//\"/}"
     CURRENT_PHP_NAME="php${escaped_selection:4:1}${escaped_selection:6:1}"
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
-    CURRENT_PHP_VERSION="${escaped_selection:4:1}"
-
+    CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
+    
     if { [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) currently not support this php version building (${CURRENT_PHP_NAME}). Skipping..."
         exit 0
