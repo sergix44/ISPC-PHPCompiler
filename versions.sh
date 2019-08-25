@@ -10,6 +10,7 @@ declare -A VERSIONS=(
     ["PHP 7.1.31"]="http://php.net/distributions/php-7.1.31.tar.gz"
     ["PHP 7.2.21"]="http://php.net/distributions/php-7.2.21.tar.gz"
     ["PHP 7.3.8"]="http://php.net/distributions/php-7.3.8.tar.gz"
+    ["PHP 7.4.b"]="https://downloads.php.net/~derick/php-7.4.0beta4.tar.gz"
 )
 
 # All PHP versions checksum
@@ -20,4 +21,5 @@ declare -A CHECKSUM=(
     ["PHP 7.1.31"]="ea0558735653b9ce63e9cea41dd8f0d0b90dba6c39d39dd9a6aad5cc58b0bdfc"
     ["PHP 7.2.21"]="8327682bee4a8fd2edf5bbfcc393d986b945bec433fc74458d05e766701b313c"
     ["PHP 7.3.8"]="31af3eff3337fb70733c9b02a3444c3dae662ecab20aeec7fdc3c42e22071490"
+    ["PHP 7.4.b"]="d5af6148be6d53cb196a80b1b7025d4502a7865bc0251376c064edcd7cfb58d7"
 )
