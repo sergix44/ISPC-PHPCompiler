@@ -23,7 +23,7 @@ env:
     - OS=ubuntu DIST=18.04 PHPV="PHP 7.1.32"
     - OS=debian DIST=8 PHPV="PHP 7.1.32"
     - OS=debian DIST=9 PHPV="PHP 7.1.32"
-    - OS=debian DIST=10 PHPV="PHP 7.1.31"
+    - OS=debian DIST=10 PHPV="PHP 7.1.32"
     - OS="qxip/devuan" DIST="jessie" PHPV="PHP 7.1.32"
     - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.1.32"
 
