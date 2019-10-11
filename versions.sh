@@ -8,8 +8,8 @@ declare -A VERSIONS=(
     ["PHP 5.6.40"]="http://php.net/distributions/php-5.6.40.tar.gz"
     ["PHP 7.0.33"]="http://php.net/distributions/php-7.0.33.tar.gz"
     ["PHP 7.1.32"]="http://php.net/distributions/php-7.1.32.tar.gz"
-    ["PHP 7.2.23"]="http://php.net/distributions/php-7.2.22.tar.gz"
-    ["PHP 7.3.10"]="http://php.net/distributions/php-7.3.9.tar.gz"
+    ["PHP 7.2.23"]="http://php.net/distributions/php-7.2.23.tar.gz"
+    ["PHP 7.3.10"]="http://php.net/distributions/php-7.3.10.tar.gz"
     ["PHP 7.4.b"]="https://downloads.php.net/~derick/php-7.4.0beta4.tar.gz"
 )
 
