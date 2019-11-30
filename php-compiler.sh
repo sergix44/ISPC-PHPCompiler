@@ -23,6 +23,9 @@ check_return_code() {
 install_utils() {
     echo -e "Do OS updates..."
     if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
+        yum -y install epel-release
+        check_return_code
+        yum check-update
         yum -y update
         yum -y install whiptail curl wget
     else
@@ -203,17 +206,11 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "centos7" ]; then
-        yum -y install epel-release
-        check_return_code
-        yum check-update
         yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel
         check_return_code
     fi
     
     if [ "${DISTRO}" == "centos8" ]; then
-        yum -y install epel-release
-        check_return_code
-        yum check-update
         yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel
         check_return_code
     fi
