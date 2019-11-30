@@ -2,7 +2,7 @@ FROM &&OS&&:&&DIST&&
 
 ADD php-compiler.sh /root/
 ADD versions.sh /root/
-ADD tests/ /root/
+ADD ./tests/ /root/tests
 RUN chmod +x /root/php-compiler.sh; \
     chmod +x /root/versions.sh; \
     cd /root; \
