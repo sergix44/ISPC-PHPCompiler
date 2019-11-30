@@ -22,7 +22,7 @@ check_return_code() {
 
 install_utils() {
     echo -e "Do OS updates..."
-    if [ "${DISTRO}" == "centos7" ]; then
+    if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
         yum -y update
         yum -y install whiptail curl wget
     else
