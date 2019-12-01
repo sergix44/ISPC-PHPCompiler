@@ -28,6 +28,7 @@ install_utils() {
         yum -y update
         check_return_code
     elif [ "${DISTRO}" == "centos8" ]; then
+        dnf -y install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
         yum -y install epel-release curl wget
         check_return_code
         yum -y update
