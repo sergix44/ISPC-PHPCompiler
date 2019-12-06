@@ -400,6 +400,7 @@ compile() {
     zip="--enable-zip --with-libzip"
     freetype="--with-freetype-dir"
     gd="--with-gd"
+    jpg="--with-jpeg-dir=/usr"
 
     if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
         libdir="--with-libdir=lib64"
@@ -434,6 +435,8 @@ compile() {
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
         gd="--enable-gd"
         freetype="--with-freetype"
+        jpg="--with-jpeg"
+        webp="--with-webp"
     fi
 
     # shellcheck disable=SC2086
@@ -444,7 +447,7 @@ compile() {
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
-        --with-jpeg --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
+        ${jpg} --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm)
