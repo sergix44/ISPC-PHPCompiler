@@ -23,8 +23,15 @@ check_return_code() {
 install_utils() {
     echo -e "Do OS updates..."
     if [ "${DISTRO}" == "centos7" ]; then
+        yum -y install epel-release whiptail curl wget
+        check_return_code
         yum -y update
-        yum -y install whiptail curl wget
+        check_return_code
+    elif [ "${DISTRO}" == "centos8" ]; then
+        yum -y install epel-release curl wget
+        check_return_code
+        yum -y update
+        check_return_code
     else
         apt-get update && apt-get -y upgrade
         apt-get -y install whiptail curl wget
@@ -122,6 +129,10 @@ detect_distro() {
         DISTRO=centos7
     fi
 
+    if echo "${ID}-${VERSION_ID}" | grep -iq "centos-8"; then
+        DISTRO=centos8
+    fi
+
     if [ "${DISTRO}" == "" ]; then
         echo "Your distro is not supported"
         echo "Your distro: ${ID}-${VERSION_ID}"
@@ -199,10 +210,14 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "centos7" ]; then
-        yum -y install epel-release
-        check_return_code
-        yum check-update
         yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel
+        check_return_code
+    fi
+    
+    if [ "${DISTRO}" == "centos8" ]; then
+        dnf -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel
+        check_return_code
+        dnf -y --enablerepo=PowerTools install oniguruma-devel
         check_return_code
     fi
 }
@@ -385,8 +400,9 @@ compile() {
     zip="--enable-zip --with-libzip"
     freetype="--with-freetype-dir"
     gd="--with-gd"
+    jpg="--with-jpeg-dir=/usr"
 
-    if [ "${DISTRO}" == "centos7" ]; then
+    if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
         libdir="--with-libdir=lib64"
         zip="--enable-zip"
 
@@ -419,6 +435,8 @@ compile() {
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
         gd="--enable-gd"
         freetype="--with-freetype"
+        jpg="--with-jpeg"
+        webp="--with-webp"
     fi
 
     # shellcheck disable=SC2086
@@ -429,7 +447,7 @@ compile() {
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
-        --with-jpeg-dir=/usr --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
+        ${jpg} --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm)
@@ -468,15 +486,15 @@ install() {
     cp "${COMPILE_PATH}/${FOLDER_NAME}/php.ini-production" "${CURRENT_PHP_PATH}/lib/php.ini"
     cp "${CURRENT_PHP_PATH}/etc/php-fpm.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
 
-    sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+    sed -i 's/;pid = run\/php-fpm.pid/pid = run\/php-fpm.pid/' "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
 
     if [ "${CURRENT_PHP_VERSION}" -lt 70 ]; then
-        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.conf
-        echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> ${CURRENT_PHP_PATH}/etc/php-fpm.conf
+        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
+        echo "include=${CURRENT_PHP_PATH}/etc/php-fpm.d/*.conf" >> "${CURRENT_PHP_PATH}/etc/php-fpm.conf"
         check_folder "${CURRENT_PHP_PATH}/etc/php-fpm.d"
     else
         cp "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf.default" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
-        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" ${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf
+        sed -i "s/listen = 127.0.0.1:9000/listen = 127.0.0.1:${FPM_PORT}/" "${CURRENT_PHP_PATH}/etc/php-fpm.d/www.conf"
     fi
 
     create_init_script "${CURRENT_PHP_NAME}" "${CURRENT_PHP_PATH}"
@@ -495,8 +513,8 @@ install() {
 
 check_symlink() {
         if [ ! -f "/usr/bin/${CURRENT_PHP_NAME}" ]; then
-                ln -s ${CURRENT_PHP_PATH}/bin/php /usr/bin/${CURRENT_PHP_NAME}
-                update-alternatives --install /usr/bin/php php /opt/${CURRENT_PHP_NAME}/bin/php "${CURRENT_PHP_VERSION}"
+                ln -s "${CURRENT_PHP_PATH}/bin/php" "/usr/bin/${CURRENT_PHP_NAME}"
+                update-alternatives --install /usr/bin/php php "/opt/${CURRENT_PHP_NAME}/bin/php" "${CURRENT_PHP_VERSION}"
         fi
 }
 
@@ -535,7 +553,7 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
 
-    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
+    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 0
     fi
