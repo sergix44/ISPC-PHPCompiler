@@ -8,9 +8,9 @@ declare -A VERSIONS=(
     ["PHP 5.6.40"]="https://www.php.net/distributions/php-5.6.40.tar.gz"
     ["PHP 7.0.33"]="https://www.php.net/distributions/php-7.0.33.tar.gz"
     ["PHP 7.1.33"]="https://www.php.net/distributions/php-7.1.33.tar.gz"
-    ["PHP 7.2.27"]="https://www.php.net/distributions/php-7.2.27.tar.gz"
-    ["PHP 7.3.14"]="https://www.php.net/distributions/php-7.3.14.tar.gz"
-    ["PHP 7.4.2"]="https://www.php.net/distributions/php-7.4.2.tar.gz"
+    ["PHP 7.2.29"]="https://www.php.net/distributions/php-7.2.29.tar.gz"
+    ["PHP 7.3.16"]="https://www.php.net/distributions/php-7.3.16.tar.gz"
+    ["PHP 7.4.4"]="https://www.php.net/distributions/php-7.4.4.tar.gz"
 )
 
 # All PHP versions checksum
@@ -19,7 +19,7 @@ declare -A CHECKSUM=(
     ["PHP 5.6.40"]="56fb9878d12fdd921f6a0897e919f4e980d930160e154cbde2cc6d9206a27cac"
     ["PHP 7.0.33"]="d71a6ecb6b13dc53fed7532a7f8f949c4044806f067502f8fb6f9facbb40452a"
     ["PHP 7.1.33"]="0055f368ffefe51d5a4483755bd17475e88e74302c08b727952831c5b2682ea2"
-    ["PHP 7.2.27"]="e00ace5e89cb162cba0aebd17144541e1c4d965589155a44ca706d9f9c5a8981"
-    ["PHP 7.3.14"]="6aff532a380b0f30c9e295b67dc91d023fee3b0ae14b4771468bf5dda4cbf108"
-    ["PHP 7.4.2"]="e1b8dbf561ac1d871362054ff4cd62dca5e19c8c896567996525dda7c4b320f9"
+    ["PHP 7.2.29"]="ea5c96309394a03a38828cc182058be0c09dde1f00f35809622c2d05c50ee890"
+    ["PHP 7.3.16"]="a01ae4f6baf427413c28f8cfddbae86aeff61cdb88658e75404f2d93d98e3255"
+    ["PHP 7.4.4"]="1581b3e10c7854597e1086937d5753cdf92d132865c06a50aed4f4f407138616"
 )
