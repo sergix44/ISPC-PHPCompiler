@@ -438,9 +438,6 @@ compile() {
         jpg="--with-jpeg"
         webp="--with-webp"
         zip="--with-zip"
-        if [ "${DISTRO}" == "centos7" ]; then
-            zip="--with-zip --without-libzip"
-        fi
     fi
 
     # shellcheck disable=SC2086
