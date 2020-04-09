@@ -437,6 +437,7 @@ compile() {
         freetype="--with-freetype"
         jpg="--with-jpeg"
         webp="--with-webp"
+        zip="--with-zip"
     fi
 
     # shellcheck disable=SC2086
