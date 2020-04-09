@@ -1,4 +1,5 @@
-<?
+<?php
+
 $modules = [
     'bcmath',
     'bz2',
