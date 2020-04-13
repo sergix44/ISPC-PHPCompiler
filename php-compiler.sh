@@ -214,8 +214,11 @@ install_dependencies() {
         check_return_code
         wget http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm -O /tmp/libzip.rpm
         check_return_code
-        rpm -Uvh /tmp/libzip.rpm
+        wget http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-devel-0.11.2-6.el7.psychotic.x86_64.rpm -O /tmp/libzip-devel.rpm
         check_return_code
+        rpm -Uvh /tmp/libzip.rpm /tmp/libzip-devel.rpm
+        check_return_code
+        rm /tmp/libzip.rpm /tmp/libzip-devel.rpm
     fi
     
     if [ "${DISTRO}" == "centos8" ]; then
