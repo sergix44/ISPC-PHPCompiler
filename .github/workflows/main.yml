@@ -3,13 +3,15 @@ on: [push]
 jobs:
   test:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
-    name: Test ${{ matrix.os }} ${{ matrix.phpv }}
+    name: ${{ matrix.os }} ${{ matrix.phpv }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         os: ["centos\\:7","centos\\:8", "ubuntu\\:16.04", "ubuntu\\:18.04", "debian\\:8", "debian\\:9", "debian\\:10", "qxip/devuan\\:jessie", "qxip/devuan\\:ascii"]
         phpv: [PHP 5.6.40, PHP 7.0.33, PHP 7.1.33, PHP 7.2.29, PHP 7.3.16, PHP 7.4.4]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: shellcheck
         uses: ludeeus/action-shellcheck@0.1.0
       - name: build
