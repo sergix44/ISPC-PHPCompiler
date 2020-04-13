@@ -414,7 +414,6 @@ compile() {
         zip="--enable-zip"
 
         if [ "${CURRENT_PHP_VERSION}" -gt 72 ]; then
-                zip="--enable-zip --without-libzip"
                 ADDITIONAL_CFLAGS=""
         fi
     fi
