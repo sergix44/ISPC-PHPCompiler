@@ -562,12 +562,12 @@ elaborate_selection() {
 
     if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
-        exit 0
+        exit 5
     fi
 
     if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
-        exit 0
+        exit 5
     fi       
 
     echo -e "Checking compile path..."
