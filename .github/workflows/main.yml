@@ -2,6 +2,7 @@ on: [push]
 
 jobs:
   test:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     name: A job to test os matrix
     runs-on: ubuntu-latest
     strategy:
@@ -11,6 +12,10 @@ jobs:
     steps:
       - name: shellcheck
         uses: ludeeus/action-shellcheck@0.1.0
-      - name: Build
-        run: sed -e "s:&&OS&&:${{ matrix.os }}:g" ./Dockerfile.sample | sed -e "s:&&PHPVL&&:${{ matrix.phpv }}:g" | sed -e "s:&&PHPVS&&:php${${{ matrix.phpv }}:4:1}${${{ matrix.phpv }}:6:1}:g" | tee Dockerfile
-        run: docker build -t sergix44/ispc-phpcompiler .
+      - name: build
+        run: |
+          sed -e "s:&&OS&&:${{ matrix.os }}:g" ./Dockerfile.sample 
+          sed -e "s:&&PHPVL&&:${{ matrix.phpv }}:g" 
+          sed -e "s:&&PHPVS&&:php${${{ matrix.phpv }}:4:1}${${{ matrix.phpv }}:6:1}:g" 
+          tee Dockerfile
+          docker build -t sergix44/ispc-phpcompiler .
