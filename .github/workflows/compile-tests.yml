@@ -8,18 +8,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["centos\\:7","centos\\:8", "ubuntu\\:16.04", "ubuntu\\:18.04", "debian\\:8", "debian\\:9", "debian\\:10", "qxip/devuan\\:jessie", "qxip/devuan\\:ascii"]
+        os: ["centos:7", "centos:8", "ubuntu:16.04", "ubuntu:18.04", "debian:8", "debian:9", "debian:10", "qxip\/devuan:jessie", "qxip\/devuan:ascii"]
         phpv: ["PHP 5.6.40", "PHP 7.0.33", "PHP 7.1.33", "PHP 7.2.29", "PHP 7.3.16", "PHP 7.4.4"]
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v2
-      - name: shellcheck
-        uses: ludeeus/action-shellcheck@0.1.0
       - name: build
         run: |
+          cat /proc/cpuinfo
+          apt install -y shellcheck
+          shellcheck versions.sh
+          shellcheck -x php-compiler.sh
           phpvs="${{ matrix.phpv }}"
           phpvs="php${phpvs:4:1}${phpvs:6:1}"
           echo ${{ matrix.os }}
           echo $phpvs
-          sed -e "s:&&OS&&:${{ matrix.os }}:g" ./Dockerfile.actions | sed -e "s:&&PHPVL&&:${{ matrix.phpv }}:g" | sed -e "s:&&PHPVS&&:${phpvs}:g" | tee Dockerfile
+          sed -e "s/&&OS&&/${{ matrix.os }}/g" ./Dockerfile.actions | sed -e "s:&&PHPVL&&:${{ matrix.phpv }}:g" | sed -e "s:&&PHPVS&&:${phpvs}:g" | tee Dockerfile
           docker build -t sergix44/ispc-phpcompiler .
+          if [ $? -eq 0 ] || [ $? -eq 127 ]; then exit 0; fi
