@@ -16,8 +16,10 @@ jobs:
         uses: ludeeus/action-shellcheck@0.1.0
       - name: build
         run: |
-          echo ${{ matrix.phpv }}
-          phpvs="${${{ matrix.phpv }}//\"/}"
+          phpvs="${{ matrix.phpv }}
           phpvs="php${phpvs:4:1}${phpvs:6:1}"
-          sed -e "s:&&OS&&:${{ matrix.os }}:g" ./Dockerfile.actions | sed -e "s:&&PHPVL&&:${{ matrix.phpv }}:g" | sed -e "s:&&PHPVS&&:phpvs:g" | tee Dockerfile
+          echo ${{ matrix.phpv }}
+          echo ${{ matrix.phpv }}
+          echo $phpvs
+          sed -e "s:&&OS&&:${{ matrix.os }}:g" ./Dockerfile.actions | sed -e "s:&&PHPVL&&:${{ matrix.phpv }}:g" | sed -e "s:&&PHPVS&&:${phpvs}:g" | tee Dockerfile
           docker build -t sergix44/ispc-phpcompiler .
