@@ -1,4 +1,4 @@
-FROM &&OS&&:&&DIST&&
+FROM &&OS&&
 
 ADD php-compiler.sh /root/
 ADD versions.sh /root/
