@@ -7,11 +7,12 @@ RUN chmod +x /root/php-compiler.sh; \
     chmod +x /root/versions.sh; \
     cd /root; \
     /bin/bash /root/php-compiler.sh "&&PHPVL&&"; \
-    if [ $? -eq 0 ]; then \
+    exitcode=$?; \
+    if [ $exitcode -eq 0 ]; then \
     /etc/init.d/&&PHPVS&&-fpm start; \
     &&PHPVS&& -v; \
     for i in /root/tests/*.php; do echo "$i" && php "$i"; done \
-    elif [ $? -eq 5 ]; then \
+    elif [ $exitcode -eq 5 ]; then \
     exit 0; \
     else \
     exit 1; \  
