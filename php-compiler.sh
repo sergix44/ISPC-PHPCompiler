@@ -125,6 +125,10 @@ detect_distro() {
         DISTRO=ubuntu-18.04
     fi
 
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-20.04"; then
+        DISTRO=ubuntu-20.04
+    fi
+    
     if echo "${ID}-${VERSION_ID}" | grep -iq "centos-7"; then
         DISTRO=centos7
     fi
@@ -208,7 +212,14 @@ install_dependencies() {
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
-
+    
+    if [ "${DISTRO}" == "ubuntu-20.04" ]; then
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools
+        check_return_code
+        ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
+    fi
+    
     if [ "${DISTRO}" == "centos7" ]; then
         yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel
         check_return_code
@@ -560,7 +571,7 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
 
-    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
+    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "ubuntu-20.04" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "devuan2" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 5
     fi
