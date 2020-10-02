@@ -443,7 +443,7 @@ compile() {
     fi
 
 
-    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         compile_freetype
         freetype="--with-freetype-dir=/tmp/freetype2"
     fi
