@@ -1,10 +1,6 @@
 FROM &&OS&&
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV HTTP_PROXY "http://88.198.50.103:8080"
-ENV HTTPS_PROXY "https://88.198.50.103:8080"
-ENV FTP_PROXY "ftp://88.198.50.103:8080"
-
 ADD php-compiler.sh /root/
 ADD versions.sh /root/
 ADD ./tests/ /root/tests
