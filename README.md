@@ -12,9 +12,7 @@ wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/ph
 ```
 # Currently supported platforms
 Checked entries are also successfully tested.
-- [x] Devuan 1
 - [x] Devuan 2 (ASCII)
-- [x] Debian 8
 - [x] Debian 9
 - [x] Debian 10
 - [x] CentOS 7
@@ -27,6 +25,8 @@ The script should also work on:
  - Ubuntu 14.04
  - Ubuntu 17.04
  - Ubuntu 17.10
+ - Devuan 1
+ - Debian 8
 
 But these platforms are no longer tested.
 

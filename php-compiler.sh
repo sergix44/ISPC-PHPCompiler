@@ -443,7 +443,7 @@ compile() {
     fi
 
 
-    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         compile_freetype
         freetype="--with-freetype-dir=/tmp/freetype2"
     fi
@@ -552,7 +552,7 @@ cleanup() {
     rm -r "${COMPILE_PATH:?}/${FOLDER_NAME}"
     rm -r "${COMPILE_PATH:?}/${ARCHIVE_NAME}"
 
-    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         rm -r /tmp/freetype-*/
         rm -r "/tmp/freetype.tar.xz"
         rm -r "/tmp/freetype2/"
@@ -576,7 +576,7 @@ elaborate_selection() {
         exit 5
     fi
 
-    if [ "${DISTRO}" == "debian10" ] && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
+    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 5
     fi       
