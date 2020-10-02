@@ -13,7 +13,7 @@ env:
     - OS=ubuntu DIST=20.04 PHPV="PHP 7.4.11"
     - OS=debian DIST=9 PHPV="PHP 7.4.11"
     - OS=debian DIST=10 PHPV="PHP 7.4.11"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.4.11"
+    - OS="rdebath/devuan" DIST="ascii" PHPV="PHP 7.4.11"
 
     - OS=centos DIST=7 PHPV="PHP 7.3.23"
     - OS=centos DIST=8 PHPV="PHP 7.3.23"
@@ -21,7 +21,7 @@ env:
     - OS=ubuntu DIST=18.04 PHPV="PHP 7.3.23"
     - OS=debian DIST=9 PHPV="PHP 7.3.23"
     - OS=debian DIST=10 PHPV="PHP 7.3.23"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.3.23"
+    - OS="rdebath/devuan" DIST="ascii" PHPV="PHP 7.3.23"
 
     - OS=centos DIST=7 PHPV="PHP 7.2.34"
     - OS=centos DIST=8 PHPV="PHP 7.2.34"
@@ -30,7 +30,7 @@ env:
     - OS=ubuntu DIST=20.04 PHPV="PHP 7.2.34"
     - OS=debian DIST=9 PHPV="PHP 7.2.34"
     - OS=debian DIST=10 PHPV="PHP 7.2.34"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.2.34"
+    - OS="rdebath/devuan" DIST="ascii" PHPV="PHP 7.2.34"
 
     - OS=centos DIST=7 PHPV="PHP 7.1.33"
     - OS=centos DIST=8 PHPV="PHP 7.1.33"
@@ -39,7 +39,7 @@ env:
     - OS=ubuntu DIST=20.04 PHPV="PHP 7.1.33"
     - OS=debian DIST=9 PHPV="PHP 7.1.33"
     - OS=debian DIST=10 PHPV="PHP 7.1.33"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.1.33"
+    - OS="rdebath/devuan" DIST="ascii" PHPV="PHP 7.1.33"
 
     - OS=centos DIST=7 PHPV="PHP 7.0.33"
     - OS=centos DIST=8 PHPV="PHP 7.0.33"
@@ -47,7 +47,7 @@ env:
     - OS=ubuntu DIST=18.04 PHPV="PHP 7.0.33"
     - OS=ubuntu DIST=20.04 PHPV="PHP 7.0.33"
     - OS=debian DIST=9 PHPV="PHP 7.0.33"
-    - OS="qxip/devuan" DIST="ascii" PHPV="PHP 7.0.33"
+    - OS="rdebath/devuan" DIST="ascii" PHPV="PHP 7.0.33"
 
     - OS=centos DIST=7 PHPV="PHP 5.6.40"
     - OS=ubuntu DIST=16.04 PHPV="PHP 5.6.40"
