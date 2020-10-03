@@ -1,4 +1,4 @@
-# 🚀 The PHP Compiler Script [![Build Status](https://travis-ci.org/SergiX44/ISPC-PHPCompiler.svg?branch=bash-version)](https://travis-ci.org/SergiX44/ISPC-PHPCompiler)
+# 🚀 The PHP Compiler Script ![.github/workflows/compile-tests.yml](https://github.com/SergiX44/ISPC-PHPCompiler/workflows/.github/workflows/compile-tests.yml/badge.svg)
 
 This script will help you to manage different PHP version for your webserver (especially made for ISPConfig installations). 
 This supports **auto compiling and auto configure feature** with a **very high optimization level** (`-O3` `-march=native` `-mtune=native` flags) for PHP >= 5.6. See the versions.sh file to see them.
