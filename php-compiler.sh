@@ -25,16 +25,26 @@ install_utils() {
     if [ "${DISTRO}" == "centos7" ]; then
         yum -y install epel-release whiptail curl wget
         check_return_code
-        yum -y update
-        check_return_code
+        if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
+            yum -y update
+            check_return_code
+        fi
     elif [ "${DISTRO}" == "centos8" ]; then
         yum -y install epel-release curl wget
         check_return_code
-        yum -y update
-        check_return_code
+        if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
+            yum -y update
+            check_return_code
+        fi
     else
-        apt-get update && apt-get -y upgrade
+        apt update
+        check_return_code
+        if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
+            apt-get -y upgrade
+            check_return_code
+        fi
         apt-get -y install whiptail curl wget
+        check_return_code
     fi
     check_return_code
 }
@@ -615,7 +625,7 @@ elaborate_selection() {
 
 am_i_root
 detect_distro
-install_utils
+install_utils "$@"
 install_dependencies
 
 if [ -f ./versions.sh ]; then
