@@ -11,14 +11,17 @@ Just run this command in your shell to download and run the script, and then jus
 wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/php-compiler.sh; chmod +x php-compiler.sh; bash php-compiler.sh
 ```
 # Currently supported platforms
-Checked entries are also successfully tested.
-- [x] Devuan 2 (ASCII)
-- [x] Debian 9
-- [x] Debian 10
-- [x] CentOS 7
-- [x] CentOS 8
-- [x] Ubuntu 16.04
-- [x] Ubuntu 18.04
+| OS \ PHP     	| 5.6 	| 7.0 	| 7.1 	| 7.2 	| 7.3 	| 7.4 	| 8.0 	|
+|--------------	|-----	|-----	|-----	|-----	|-----	|-----	|-----	|
+| Devuan 2     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Devuan 3     	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Debian 9     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Debian 10    	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Centos 7     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Centos 8     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Ubuntu 16.04 	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Ubuntu 18.04 	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
+| Ubuntu 20.04 	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 
 # EOL
 The script should also work on:
