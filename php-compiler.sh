@@ -625,7 +625,7 @@ elaborate_selection() {
 
 am_i_root
 detect_distro
-install_utils
+install_utils "$@"
 install_dependencies
 
 if [ -f ./versions.sh ]; then
