@@ -37,9 +37,9 @@ install_utils() {
             check_return_code
         fi
     else
-        apt update
-        check_return_code
         if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
+            apt update
+            check_return_code
             apt-get -y upgrade
             check_return_code
         fi
