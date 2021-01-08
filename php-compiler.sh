@@ -256,7 +256,7 @@ install_dependencies() {
     if [ "${DISTRO}" == "centos8" ]; then
         dnf -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel
         check_return_code
-        dnf -y --enablerepo=PowerTools install oniguruma-devel
+        dnf -y --enablerepo=powertools install oniguruma-devel
         check_return_code
     fi
 }
