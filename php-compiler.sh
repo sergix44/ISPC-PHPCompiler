@@ -21,32 +21,19 @@ check_return_code() {
 }
 
 install_utils() {
-    echo -e "Do OS updates..."
+    echo -e "Installing required packages..."
     if [ "${DISTRO}" == "centos7" ]; then
         yum -y install epel-release whiptail curl wget
         check_return_code
-        if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
-            yum -y update
-            check_return_code
-        fi
     elif [ "${DISTRO}" == "centos8" ]; then
         yum -y install epel-release curl wget
         check_return_code
-        if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
-            yum -y update
-            check_return_code
-        fi
     else
-        if printf '%s\n' "$@" | grep -q -v -P '^--skip-upgrade'; then
-            apt update
-            check_return_code
-            apt-get -y upgrade
-            check_return_code
-        fi
+        apt update
+        check_return_code
         apt-get -y install whiptail curl wget
         check_return_code
     fi
-    check_return_code
 }
 
 check_folder() {
@@ -256,7 +243,7 @@ install_dependencies() {
     if [ "${DISTRO}" == "centos8" ]; then
         dnf -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel
         check_return_code
-        dnf -y --enablerepo=PowerTools install oniguruma-devel
+        dnf -y --enablerepo=powertools install oniguruma-devel
         check_return_code
     fi
 }
@@ -489,7 +476,7 @@ compile() {
         ${jpg} --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
-        --enable-opcache --enable-intl --enable-fpm)
+        --enable-opcache --enable-intl --enable-fpm --with-pear)
     check_return_code
 
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
