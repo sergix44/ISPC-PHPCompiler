@@ -450,6 +450,10 @@ compile() {
         webp="--with-vpx-dir=/usr"
     fi
 
+    gmp="--with-gmp"
+    if [ "${DISTRO}" == "ubuntu-16.04" ] && [ "${CURRENT_PHP_VERSION}" -lt 70 ]; then
+        gmp=""
+    fi
 
     if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         compile_freetype
@@ -476,7 +480,7 @@ compile() {
         ${jpg} --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
-        --enable-opcache --enable-intl --enable-fpm --with-pear --with-readline --with-gmp)
+        --enable-opcache --enable-intl --enable-fpm --with-pear --with-readline ${gmp})
     check_return_code
 
     CPU_COUNT=$(grep -c ^processor /proc/cpuinfo)
