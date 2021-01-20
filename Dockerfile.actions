@@ -12,6 +12,8 @@ RUN chmod +x /root/php-compiler.sh; \
     if [ $exitcode -eq 0 ]; then \
     /etc/init.d/&&PHPVS&&-fpm start; \
     &&PHPVS&& -v; \
+    &&PHPVS&& -m; \
+    (cd /opt/&&PHPVS&&/bin && ./pear version); \
     for i in /root/tests/*.php; do echo "$i" && php "$i"; done \
     elif [ $exitcode -eq 5 ]; then \
     exit 0; \
