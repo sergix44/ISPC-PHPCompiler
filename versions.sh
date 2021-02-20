@@ -9,9 +9,9 @@ declare -A VERSIONS=(
     ["PHP 7.0.33"]="https://www.php.net/distributions/php-7.0.33.tar.gz"
     ["PHP 7.1.33"]="https://www.php.net/distributions/php-7.1.33.tar.gz"
     ["PHP 7.2.34"]="https://www.php.net/distributions/php-7.2.34.tar.gz"
-    ["PHP 7.3.27"]="https://www.php.net/distributions/php-7.3.26.tar.gz"
-    ["PHP 7.4.15"]="https://www.php.net/distributions/php-7.4.14.tar.gz"
-    ["PHP 8.0.2"]="https://www.php.net/distributions/php-8.0.1.tar.gz"
+    ["PHP 7.3.27"]="https://www.php.net/distributions/php-7.3.27.tar.gz"
+    ["PHP 7.4.15"]="https://www.php.net/distributions/php-7.4.15.tar.gz"
+    ["PHP 8.0.2"]="https://www.php.net/distributions/php-8.0.2.tar.gz"
 )
 
 # All PHP versions checksum
