@@ -29,6 +29,8 @@ The script should also work on:
  - Ubuntu 17.04
  - Ubuntu 17.10
  - Devuan 1
+ - Devuan 2
+ - Devuan 3
  - Debian 8
 
 But these platforms are no longer tested.
