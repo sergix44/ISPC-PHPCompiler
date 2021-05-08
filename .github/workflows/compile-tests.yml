@@ -13,14 +13,15 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: shellcheck
+      - name: Runner CPU Info
+        run: cat /proc/cpuinfo
+      - name: Shellcheck analysis
         run: |
           sudo apt-get install -y shellcheck
           shellcheck versions.sh
           shellcheck -x php-compiler.sh
-      - name: build
+      - name: Build
         run: |
-          cat /proc/cpuinfo
           phpvs="${{ matrix.phpv }}"
           phpvs="php${phpvs:4:1}${phpvs:6:1}"
           echo ${{ matrix.os }}
