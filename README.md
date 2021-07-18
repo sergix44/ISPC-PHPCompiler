@@ -32,6 +32,7 @@ The script should also work on:
  - Devuan 2
  - Devuan 3
  - Debian 8
+ - CentOS 8
 
 But these platforms are no longer tested.
 
