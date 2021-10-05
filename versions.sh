@@ -12,6 +12,7 @@ declare -A VERSIONS=(
     ["PHP 7.3.29"]="https://www.php.net/distributions/php-7.3.29.tar.gz"
     ["PHP 7.4.21"]="https://www.php.net/distributions/php-7.4.21.tar.gz"
     ["PHP 8.0.8"]="https://www.php.net/distributions/php-8.0.8.tar.gz"
+    ["PHP 8.1RC"]="https://downloads.php.net/~ramsey/php-8.1.0beta3.tar.gz"
 )
 
 # All PHP versions checksum
@@ -24,4 +25,5 @@ declare -A CHECKSUM=(
     ["PHP 7.3.29"]="ba4de3955b0cbd33baee55a83568acc4347605e210a54b5654e4c1e09b544659"
     ["PHP 7.4.21"]="4b9623accbe4b8923a801212f371f784069535009185e7bf7e4dec66bbea61db"
     ["PHP 8.0.8"]="084a1e8020e86fb99b663d195fd9ac98a9f37dfcb9ecb5c159054cdb8f388945"
+    ["PHP 8.1RC"]="08bb5a9c36c5d2dda3cc1e7f6aa4293ffe6d92202cb6da7f4cb3ab5972fc1ffa"
 )
