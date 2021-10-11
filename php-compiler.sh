@@ -23,9 +23,6 @@ check_return_code() {
 install_utils() {
     echo -e "Installing required packages..."
     if [ "${DISTRO}" == "centos7" ]; then
-        # to be removed
-        trust dump --filter "pkcs11:id=%c4%a7%b1%a4%7b%2c%71%fa%db%e1%4b%90%75%ff%c4%15%60%85%89%10" | openssl x509 | sudo tee /etc/pki/ca-trust/source/blacklist/DST-Root-CA-X3.pem
-        update-ca-trust extract
         yum -y install epel-release whiptail curl wget
         check_return_code
     elif [ "${DISTRO}" == "centos8" ]; then
