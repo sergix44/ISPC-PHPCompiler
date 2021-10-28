@@ -13,12 +13,9 @@ wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/ph
 # Currently supported platforms
 | OS \ PHP     	| 5.6 	| 7.0 	| 7.1 	| 7.2 	| 7.3 	| 7.4 	| 8.0 	|
 |--------------	|-----	|-----	|-----	|-----	|-----	|-----	|-----	|
-| Devuan 2     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
-| Devuan 3     	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Debian 9     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Debian 10    	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Centos 7     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
-| Centos 8     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Ubuntu 18.04 	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Ubuntu 20.04 	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 
