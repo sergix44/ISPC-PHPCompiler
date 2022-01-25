@@ -9,10 +9,10 @@ declare -A VERSIONS=(
     ["PHP 7.0.33"]="https://www.php.net/distributions/php-7.0.33.tar.gz"
     ["PHP 7.1.33"]="https://www.php.net/distributions/php-7.1.33.tar.gz"
     ["PHP 7.2.34"]="https://www.php.net/distributions/php-7.2.34.tar.gz"
-    ["PHP 7.3.31"]="https://www.php.net/distributions/php-7.3.31.tar.gz"
-    ["PHP 7.4.24"]="https://www.php.net/distributions/php-7.4.24.tar.gz"
-    ["PHP 8.0.11"]="https://www.php.net/distributions/php-8.0.11.tar.gz"
-    ["PHP 8.1RC"]="https://downloads.php.net/~ramsey/php-8.1.0beta3.tar.gz"
+    ["PHP 7.3.33"]="https://www.php.net/distributions/php-7.3.33.tar.gz"
+    ["PHP 7.4.27"]="https://www.php.net/distributions/php-7.4.27.tar.gz"
+    ["PHP 8.0.15"]="https://www.php.net/distributions/php-8.0.15.tar.gz"
+    ["PHP 8.1.2"]="https://www.php.net/distributions/php-8.1.2.tar.gz"
 )
 
 # All PHP versions checksum
@@ -22,8 +22,8 @@ declare -A CHECKSUM=(
     ["PHP 7.0.33"]="d71a6ecb6b13dc53fed7532a7f8f949c4044806f067502f8fb6f9facbb40452a"
     ["PHP 7.1.33"]="0055f368ffefe51d5a4483755bd17475e88e74302c08b727952831c5b2682ea2"
     ["PHP 7.2.34"]="8b2777c741e83f188d3ca6d8e98ece7264acafee86787298fae57e05d0dddc78"
-    ["PHP 7.3.31"]="57ca37b08d3eed4cadc3976e78b0f51d0305bb6e60333f6e8c76e8aee07c3f0f"
-    ["PHP 7.4.24"]="8cc1758cf7ff45428c17641b1be84cd917a2909ba40c770f06a814d8b7f36333"
-    ["PHP 8.0.11"]="c6a461f57b4bcb46cd4dec443253b1e2e8e981466f1280093322b7864afe8be7"
-    ["PHP 8.1RC"]="08bb5a9c36c5d2dda3cc1e7f6aa4293ffe6d92202cb6da7f4cb3ab5972fc1ffa"
+    ["PHP 7.3.33"]="9a369c32c6f52036b0a890f290327f148a1904ee66aa56e2c9a7546da6525ec8"
+    ["PHP 7.4.27"]="564fd5bc9850370db0cb4058d9087f2f40177fa4921ce698a375416db9ab43ca"
+    ["PHP 8.0.15"]="47f0be6188b05390bb457eb1968ea19463acada79650afc35ec763348d5c2370"
+    ["PHP 8.1.2"]="9992409c0543e0c8e89914f7307e1485a08c057091146e4731565b59065f8bde"
 )
