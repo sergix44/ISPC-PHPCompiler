@@ -105,6 +105,10 @@ detect_distro() {
     if echo "${ID}-${VERSION_ID}" | grep -iq "debian-10"; then
         DISTRO=debian10
     fi
+    
+    if echo "${ID}-${VERSION_ID}" | grep -iq "debian-11"; then
+        DISTRO=debian11
+    fi
 
     if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-14.04"; then
         DISTRO=ubuntu-14.04
@@ -182,6 +186,13 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "debian10" ]; then
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        check_return_code
+        ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
+    fi
+    
+    if [ "${DISTRO}" == "debian11" ]; then
         apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
@@ -455,7 +466,7 @@ compile() {
         gmp=""
     fi
 
-    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         compile_freetype
         freetype="--with-freetype-dir=/tmp/freetype2"
     fi
@@ -564,7 +575,7 @@ cleanup() {
     rm -r "${COMPILE_PATH:?}/${FOLDER_NAME}"
     rm -r "${COMPILE_PATH:?}/${ARCHIVE_NAME}"
 
-    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian11" ] ||[ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         rm -r /tmp/freetype-*/
         rm -r "/tmp/freetype.tar.xz"
         rm -r "/tmp/freetype2/"
@@ -583,12 +594,12 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
 
-    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan2" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
+    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "devuan2" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 5
     fi
 
-    if { [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
+    if { [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 5
     fi       
