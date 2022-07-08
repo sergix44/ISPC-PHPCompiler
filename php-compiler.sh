@@ -636,7 +636,7 @@ if [ -f ./versions.sh ]; then
     source ./versions.sh
 else
     # shellcheck disable=SC1090
-    source <(curl -s https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/versions.sh)
+    source <(curl -s https://raw.githubusercontent.com/ressel87/bash-version/versions.sh)
 fi
 
 check_return_code
