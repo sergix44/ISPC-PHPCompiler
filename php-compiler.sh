@@ -416,6 +416,25 @@ sed -i "s:&NAME&:${1}:g" "/lib/systemd/system/${1}-fpm.service"
 sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 }
 
+compile_openssl() {
+    version="1.1.1i"
+    
+	wget "https://www.openssl.org/source/openssl-${version}.tar.gz" -O "/tmp/openssl.tar.gz"
+    check_return_code
+
+    tar -xzf "/tmp/openssl.tar.gz" -C "/tmp/"
+    check_return_code
+
+    (cd "/tmp/openssl-${version}/" && ./configure --prefix=/tmp/openssl/bin -fPIC -shared linux-x86_64)
+    check_return_code
+
+    (cd "/tmp/openssl-${version}/" && make -j 8 )
+    check_return_code
+
+    (cd "/tmp/openssl-${version}/" && make install)
+    check_return_code
+}
+
 compile_freetype() {
     version="2.10.1"
 
@@ -449,6 +468,7 @@ compile() {
     freetype="--with-freetype-dir"
     gd="--with-gd"
     jpg="--with-jpeg-dir=/usr"
+    openssl="--with-openssl"
 
     if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
         libdir="--with-libdir=lib64"
@@ -481,7 +501,11 @@ compile() {
         compile_freetype
         freetype="--with-freetype-dir=/tmp/freetype2"
     fi
-
+	
+	if [ "${DISTRO}" == "ubuntu-22.04" ]; then
+		compile_openssl
+		openssl="--with-openssl --with-openssl-dir=/tmp/openssl"
+    fi
 
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
         gd="--enable-gd"
@@ -499,7 +523,7 @@ compile() {
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
-        ${jpg} --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
+        ${jpg} --with-png-dir=/usr ${openssl} --with-fpm-user=www-data \
         --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm --with-pear --with-readline ${gmp})
@@ -590,6 +614,10 @@ cleanup() {
         rm -r /tmp/freetype-*/
         rm -r "/tmp/freetype.tar.xz"
         rm -r "/tmp/freetype2/"
+    fi
+	
+	if [ "${DISTRO}" == "ubuntu-22.04" ]; then
+        rm -r /tmp/openssl-*/
     fi
 }
 
