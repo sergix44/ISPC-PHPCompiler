@@ -425,7 +425,7 @@ compile_openssl() {
     tar -xzf "/tmp/openssl.tar.gz" -C "/tmp/"
     check_return_code
 
-    (cd "/tmp/openssl-${version}/" && ./configure --prefix=/tmp/openssl/bin -fPIC -shared linux-x86_64)
+    (cd "/tmp/openssl-${version}/" && ./Configure --prefix=/tmp/openssl/bin -fPIC -shared linux-x86_64)
     check_return_code
 
     (cd "/tmp/openssl-${version}/" && make -j 8 )
