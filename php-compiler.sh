@@ -502,9 +502,10 @@ compile() {
         freetype="--with-freetype-dir=/tmp/freetype2"
     fi
 	
-	if [ "${DISTRO}" == "ubuntu-22.04" ]; then
-		compile_openssl
-		openssl="--with-openssl --with-openssl-dir=/tmp/openssl"
+    if [ "${DISTRO}" == "ubuntu-22.04" ]; then
+        compile_openssl
+        #openssl="--with-openssl --with-openssl-dir=/tmp/openssl"
+	openssl=""
     fi
 
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
