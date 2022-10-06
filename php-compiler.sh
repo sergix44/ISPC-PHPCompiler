@@ -183,21 +183,21 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "debian9" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libldb-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian10" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libldb-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "debian11" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libldb-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
@@ -230,28 +230,28 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "ubuntu-18.04" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libldb-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "ubuntu-20.04" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libldb-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "ubuntu-22.04" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libldb-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "centos7" ]; then
-        yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel readline-devel
+        yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel libldb-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel readline-devel
         check_return_code
         wget http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm -O /tmp/libzip.rpm
         check_return_code
