@@ -469,7 +469,7 @@ compile() {
     gd="--with-gd"
     jpg="--with-jpeg-dir=/usr"
     openssl="--with-openssl"
-
+    ldap="--with-ldap"
     if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
         libdir="--with-libdir=lib64"
         zip="--enable-zip"
@@ -525,7 +525,7 @@ compile() {
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
         ${jpg} --with-png-dir=/usr ${openssl} --with-fpm-user=www-data \
-        --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
+        --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl {$ldap}\
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm --with-pear --with-readline ${gmp})
     check_return_code
