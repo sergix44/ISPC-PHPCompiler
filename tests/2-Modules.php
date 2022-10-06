@@ -52,7 +52,8 @@ $modules = [
     'Zend OPcache',
     'zip',
     'zlib',
-    'gmp'
+    'gmp',
+    'ldap'
 ];
 
 $e = 0;
