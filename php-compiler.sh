@@ -134,6 +134,10 @@ detect_distro() {
         DISTRO=ubuntu-20.04
     fi
     
+    if echo "${ID}-${VERSION_ID}" | grep -iq "ubuntu-22.04"; then
+        DISTRO=ubuntu-22.04
+    fi
+    
     if echo "${ID}-${VERSION_ID}" | grep -iq "centos-7"; then
         DISTRO=centos7
     fi
@@ -179,21 +183,21 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "debian9" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libldb-dev libldap2-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
 
     if [ "${DISTRO}" == "debian10" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libldb-dev libldap2-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "debian11" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libldb-dev libldap2-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev insserv pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
@@ -226,21 +230,28 @@ install_dependencies() {
     fi
 
     if [ "${DISTRO}" == "ubuntu-18.04" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libldb-dev libldap2-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "ubuntu-20.04" ]; then
-        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libldb-dev libldap2-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
+        check_return_code
+        ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
+        ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
+    fi
+    
+    if [ "${DISTRO}" == "ubuntu-22.04" ]; then
+        apt-get -y install build-essential autoconf libfcgi-dev libfcgi0ldbl libmcrypt-dev libssl-dev libldb-dev libldap2-dev libc-client2007e libc-client2007e-dev libxml2-dev libbz2-dev libcurl4-openssl-dev libjpeg-dev libfreetype6-dev libkrb5-dev libpq-dev libxml2-dev libxslt1-dev libwebp-dev libvpx-dev libc-client2007e-dev libicu-dev libzip-dev pkg-config zlib1g-dev libsqlite3-dev libonig-dev icu-devtools libreadline-dev libgmp-dev
         check_return_code
         ln -s  /usr/include/x86_64-linux-gnu/curl  /usr/include/curl
         ln -s /usr/lib/libc-client.a /usr/lib/x86_64-linux-gnu/libc-client.a
     fi
     
     if [ "${DISTRO}" == "centos7" ]; then
-        yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel readline-devel
+        yum -y install gcc make libc-client-devel libxml2-devel pkgconfig openssl-devel bzip2-devel libldb-devel curl-devel libpng-devel libpng-devel libjpeg-devel libXpm-devel freetype-devel gmp-devel libmcrypt-devel mariadb-devel aspell-devel recode-devel httpd-devel postgresql-devel libxslt-devel libwebp-devel libvpx-devel libicu-devel gcc-c++ libzip-devel pkg-config zlib-devel libsqlite3x-devel oniguruma-devel readline-devel
         check_return_code
         wget http://packages.psychotic.ninja/7/plus/x86_64/RPMS/libzip-0.11.2-6.el7.psychotic.x86_64.rpm -O /tmp/libzip.rpm
         check_return_code
@@ -405,6 +416,25 @@ sed -i "s:&NAME&:${1}:g" "/lib/systemd/system/${1}-fpm.service"
 sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 }
 
+compile_openssl() {
+    version="1.1.1i"
+    
+	wget "https://www.openssl.org/source/openssl-${version}.tar.gz" -O "/tmp/openssl.tar.gz"
+    check_return_code
+
+    tar -xzf "/tmp/openssl.tar.gz" -C "/tmp/"
+    check_return_code
+
+    (cd "/tmp/openssl-${version}/" && ./Configure --prefix=/tmp/openssl/bin -fPIC -shared linux-x86_64)
+    check_return_code
+
+    (cd "/tmp/openssl-${version}/" && make -j 8 )
+    check_return_code
+
+    (cd "/tmp/openssl-${version}/" && make install)
+    check_return_code
+}
+
 compile_freetype() {
     version="2.10.1"
 
@@ -438,7 +468,8 @@ compile() {
     freetype="--with-freetype-dir"
     gd="--with-gd"
     jpg="--with-jpeg-dir=/usr"
-
+    openssl="--with-openssl"
+    ldap="--with-ldap"
     if [ "${DISTRO}" == "centos7" ] || [ "${DISTRO}" == "centos8" ]; then
         libdir="--with-libdir=lib64"
         zip="--enable-zip"
@@ -466,11 +497,16 @@ compile() {
         gmp=""
     fi
 
-    if { [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ] || [ "${DISTRO}" == "ubuntu-22.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         compile_freetype
         freetype="--with-freetype-dir=/tmp/freetype2"
     fi
-
+	
+    if [ "${DISTRO}" == "ubuntu-22.04" ]; then
+        compile_openssl
+        #openssl="--with-openssl --with-openssl-dir=/tmp/openssl"
+	openssl=""
+    fi
 
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
         gd="--enable-gd"
@@ -488,8 +524,8 @@ compile() {
         --with-bz2 --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm \
         --enable-pcntl --enable-mbregex --enable-exif --enable-bcmath --with-mhash \
         ${zip} --with-pcre-regex --with-pdo-mysql --with-mysqli --with-mysql-sock=/var/run/mysqld/mysqld.sock \
-        ${jpg} --with-png-dir=/usr --with-openssl --with-fpm-user=www-data \
-        --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap --with-imap-ssl \
+        ${jpg} --with-png-dir=/usr ${openssl} --with-fpm-user=www-data \
+        --with-fpm-group=www-data ${libdir} --enable-ftp --with-imap ${ldap} --with-imap-ssl \
         --with-kerberos --with-gettext --with-xmlrpc ${webp} --with-xsl \
         --enable-opcache --enable-intl --enable-fpm --with-pear --with-readline ${gmp})
     check_return_code
@@ -575,10 +611,14 @@ cleanup() {
     rm -r "${COMPILE_PATH:?}/${FOLDER_NAME}"
     rm -r "${COMPILE_PATH:?}/${ARCHIVE_NAME}"
 
-    if { [ "${DISTRO}" == "debian11" ] ||[ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
+    if { [ "${DISTRO}" == "debian11" ] ||[ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ] || [ "${DISTRO}" == "ubuntu-22.04" ]; } && [ "${CURRENT_PHP_VERSION}" -lt 74 ]; then
         rm -r /tmp/freetype-*/
         rm -r "/tmp/freetype.tar.xz"
         rm -r "/tmp/freetype2/"
+    fi
+	
+	if [ "${DISTRO}" == "ubuntu-22.04" ]; then
+        rm -r /tmp/openssl-*/
     fi
 }
 
@@ -594,12 +634,12 @@ elaborate_selection() {
     CURRENT_PHP_PATH="/opt/${CURRENT_PHP_NAME}"
     CURRENT_PHP_VERSION="${escaped_selection:4:1}${escaped_selection:6:1}"
 
-    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "devuan2" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
+    if { [ "${DISTRO}" == "centos8" ] || [ "${DISTRO}" == "debian9" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "devuan2" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-18.04" ] || [ "${DISTRO}" == "ubuntu-20.04" ] || [ "${DISTRO}" == "ubuntu-22.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php56" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 5
     fi
 
-    if { [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
+    if { [ "${DISTRO}" == "debian11" ] || [ "${DISTRO}" == "debian10" ] || [ "${DISTRO}" == "devuan3" ] || [ "${DISTRO}" == "ubuntu-20.04" ]  || [ "${DISTRO}" == "ubuntu-22.04" ]; } && [ "${CURRENT_PHP_NAME}" == "php70" ]; then
         echo -e "Your current distro(${DISTRO}) not support this php version building (${CURRENT_PHP_NAME}). Sorry..."
         exit 5
     fi       
