@@ -417,22 +417,28 @@ sed -i "s:&PATH&:${2}:g" "/lib/systemd/system/${1}-fpm.service"
 }
 
 compile_openssl() {
-    version="1.1.1i"
+    #version="1.1.1q"
     
-	wget "https://www.openssl.org/source/openssl-${version}.tar.gz" -O "/tmp/openssl.tar.gz"
+    #wget "https://www.openssl.org/source/openssl-${version}.tar.gz" -O "/tmp/openssl.tar.gz"
+    #check_return_code
+
+    wget "http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb" -O "/tmp/openssl.deb"
+    check_return_code
+    
+    dpkg -i /tmp/openssl.deb
     check_return_code
 
-    tar -xzf "/tmp/openssl.tar.gz" -C "/tmp/"
-    check_return_code
+    #tar -xzf "/tmp/openssl.tar.gz" -C "/tmp/"
+    #check_return_code
 
-    (cd "/tmp/openssl-${version}/" && ./Configure --prefix=/tmp/openssl/bin -fPIC -shared linux-x86_64)
-    check_return_code
+    #(cd "/tmp/openssl-${version}/" && ./Configure --prefix=/tmp/openssl/bin -fPIC -shared linux-x86_64)
+    #check_return_code
 
-    (cd "/tmp/openssl-${version}/" && make -j 8 )
-    check_return_code
+    #(cd "/tmp/openssl-${version}/" && make -j 8 )
+    #check_return_code
 
-    (cd "/tmp/openssl-${version}/" && make install)
-    check_return_code
+    #(cd "/tmp/openssl-${version}/" && make install)
+    #check_return_code
 }
 
 compile_freetype() {
@@ -505,7 +511,7 @@ compile() {
     if [ "${DISTRO}" == "ubuntu-22.04" ]; then
         compile_openssl
         #openssl="--with-openssl --with-openssl-dir=/tmp/openssl"
-	openssl=""
+	openssl="--with-openssl PKG_CONFIG_PATH=/tmp/openssl/bin/lib/pkgconfig"
     fi
 
     if [ "${CURRENT_PHP_VERSION}" -gt 73 ]; then
