@@ -11,7 +11,7 @@ Just run this command in your shell to download and run the script, and then jus
 wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/php-compiler.sh; chmod +x php-compiler.sh; bash php-compiler.sh
 ```
 # Currently supported platforms
-| OS \ PHP     	| 5.6 	| 7.0 	| 7.1 	| 7.2 	| 7.3 	| 7.4 	| 8.0 	| 8.1 	| 8.2 RC 	
+| OS \ PHP     	| 5.6 	| 7.0 	| 7.1 	| 7.2 	| 7.3 	| 7.4 	| 8.0 	| 8.1 	| 8.2 RC 	|
 |--------------	|-----	|-----	|-----	|-----	|-----	|-----	|-----	|-----	|-----	|
 | Debian 9     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Debian 10    	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
