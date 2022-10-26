@@ -21,7 +21,7 @@ wget https://raw.githubusercontent.com/SergiX44/ISPC-PHPCompiler/bash-version/ph
 | Ubuntu 20.04 	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 | Ubuntu 22.04 * 	|     	|     	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	| ✔️   	|
 
-*(*) on Ubuntu 22.x PHP <= 8.0 only without OpenSSL*
+(*) on Ubuntu 22.x PHP <= 8.0 only without OpenSSL
 
 # EOL
 The script should also work on:
