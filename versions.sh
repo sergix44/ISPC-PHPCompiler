@@ -11,8 +11,8 @@ declare -A VERSIONS=(
     ["PHP 7.2.34"]="https://www.php.net/distributions/php-7.2.34.tar.gz"
     ["PHP 7.3.33"]="https://www.php.net/distributions/php-7.3.33.tar.gz"
     ["PHP 7.4.32"]="https://www.php.net/distributions/php-7.4.32.tar.gz"
-    ["PHP 8.0.24"]="https://www.php.net/distributions/php-8.0.24.tar.gz"
-    ["PHP 8.1.12"]="https://www.php.net/distributions/php-8.1.12.tar.gz"
+    ["PHP 8.0.25"]="https://www.php.net/distributions/php-8.0.25.tar.gz"
+    ["PHP 8.1.11"]="https://www.php.net/distributions/php-8.1.11.tar.gz"
     ["PHP 8.2.0RC4"]="https://downloads.php.net/~sergey/php-8.2.0RC4.tar.gz"
 )
 
@@ -26,6 +26,6 @@ declare -A CHECKSUM=(
     ["PHP 7.3.33"]="9a369c32c6f52036b0a890f290327f148a1904ee66aa56e2c9a7546da6525ec8"
     ["PHP 7.4.32"]="197e3372afd69694eb6b230838305eb9e1cbe5db272e0fa3bbe0d38e329a95bc"
     ["PHP 8.0.24"]="6020843a2f1ce36745d958b3ca17f3fdc42e78a43899f552ab5dbc509ff19232"
-    ["PHP 8.1.12"]="e0e7c823c9f9aa4c021f5e34ae1a7acafc2a9f3056ca60eb70a8af8f33da3fdf"
+    ["PHP 8.1.11"]="3660e8408321149f5d382bb8eeb9ea7b12ea8dd7ea66069da33f6f7383750ab2"
     ["PHP 8.2.0RC4"]="7b344d4763a99d01a13fda253941617fc1f732f9ee1ee1d6caccceb1e74e53e7"
 )
