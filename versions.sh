@@ -11,7 +11,7 @@ declare -A VERSIONS=(
     ["PHP 7.2.34"]="https://www.php.net/distributions/php-7.2.34.tar.gz"
     ["PHP 7.3.33"]="https://www.php.net/distributions/php-7.3.33.tar.gz"
     ["PHP 7.4.33"]="https://www.php.net/distributions/php-7.4.33.tar.gz"
-    ["PHP 8.0.27"]="https://www.php.net/distributions/php-8.0.26.tar.gz"
+    ["PHP 8.0.27"]="https://www.php.net/distributions/php-8.0.27.tar.gz"
     ["PHP 8.1.14"]="https://www.php.net/distributions/php-8.1.14.tar.gz"
     ["PHP 8.2.1"]="https://www.php.net/distributions/php-8.2.1.tar.gz"
 )
